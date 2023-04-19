@@ -1,23 +1,13 @@
-import { useRouter } from 'next/router';
+import Head from 'next/head';
 
-import { Meta } from '@/layouts/Meta';
-import { Main } from '@/templates/Main';
-
-const Index = () => {
-  const router = useRouter();
-
+export default function Home() {
   return (
-    <Main
-      meta={
-        <Meta
-          title="title"
-          description=""
-        />
-      }
-    >
-      
-    </Main>
+    <div>
+      <Head>
+        <title>Create Next App</title>
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+      <div>Hello World</div>
+    </div>
   );
-};
-
-export default Index;
+}
