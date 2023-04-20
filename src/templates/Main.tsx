@@ -2,6 +2,7 @@ import Link from 'next/link';
 import type { ReactNode } from 'react';
 
 import { AppConfig } from '@/utils/AppConfig';
+import ProductList from '@/layouts/Products';
 
 type IMainProps = {
   meta: ReactNode;
@@ -52,6 +53,14 @@ const Main = (props: IMainProps) => (
                 className="border-none text-gray-700 hover:text-gray-900"
               >
                 Blog
+              </Link>
+            </li>
+            <li className="mr-6">
+              <Link
+                href="/products/"
+                className="border-none text-gray-700 hover:text-gray-900"
+              >
+                Products
               </Link>
             </li>
           </ul>
