@@ -7,7 +7,6 @@ import { useState } from 'react';
 
 const Index = () => {
   const router = useRouter();
-  const [products, setProducts] = useState(null)
   return (
     <div>
     <Main
@@ -19,7 +18,7 @@ const Index = () => {
       }
     >
     </Main>
-    <ProductList products={products} />
+    <ProductList />
     </div>
   );
 };
