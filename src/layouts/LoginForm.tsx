@@ -1,6 +1,10 @@
 import { Formik, FormikHelpers, Field, Form } from "formik";
 import * as yup from "yup";
+<<<<<<< HEAD
 import router from "next/router";
+=======
+
+>>>>>>> parent of db03239 (Revert "Loginpage")
 
 interface Values {
   username: string;
@@ -13,6 +17,7 @@ const loginSchema = yup.object().shape({
 });
 
 const initialValuesLogin = {
+<<<<<<< HEAD
   username: "johnd",
   password: "m38rmF$",
 };
@@ -21,11 +26,23 @@ let loggedIn: string;
 
 const login = async (values: Values, setSubmitting : FormikHelpers<Values>) => {
   
+=======
+  username: "",
+  password: "",
+};
+
+const handleFormSubmit = async (values: Values, setSubmitting : FormikHelpers<Values>) => {
+  await login(values, setSubmitting);
+};
+
+const login = async (values: Values, setSubmitting : FormikHelpers<Values>) => {
+>>>>>>> parent of db03239 (Revert "Loginpage")
   const loggedInResponse = await fetch('https://fakestoreapi.com/auth/login', {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(values),
   });
+<<<<<<< HEAD
   loggedIn = await loggedInResponse.json();
   setSubmitting.resetForm();
     console.log(loggedIn);
@@ -34,6 +51,11 @@ const login = async (values: Values, setSubmitting : FormikHelpers<Values>) => {
 const handleFormSubmit = async (values: Values, setSubmitting : FormikHelpers<Values>) => {
   await login(values, setSubmitting);
   
+=======
+  const loggedIn = await loggedInResponse.json();
+  setSubmitting.resetForm();
+ console.log(loggedIn);
+>>>>>>> parent of db03239 (Revert "Loginpage")
 };
 
 const LoginForm = () => {
@@ -77,7 +99,11 @@ const LoginForm = () => {
                       </div>
                       <a href="#" className="text-sm font-medium text-primary-600 hover:underline dark:text-primary-500">Forgot password?</a>
                   </div>
+<<<<<<< HEAD
                   <button type="submit" onClick={() => loggedIn ? router.push('/admin') : router.push('/login')} className="w-full text-black bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Sign in</button>
+=======
+                  <button type="submit" className="w-full text-black bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Sign in</button>
+>>>>>>> parent of db03239 (Revert "Loginpage")
                   <p className="text-sm font-light text-gray-500 dark:text-gray-400">
                       Don’t have an account yet? <a href="#" className="font-medium text-primary-600 hover:underline dark:text-primary-500">Sign up</a>
                   </p>
