@@ -7,7 +7,7 @@ export const Navbar = () => {
         <Link legacyBehavior href="/">
           <a className="mr-4 inline-flex items-center p-2 ">            
             <span className="text-xl font-bold uppercase tracking-wide text-white">
-              Ask-Commerce
+              Talwind CSS
             </span>
           </a>
         </Link>
