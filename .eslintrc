@@ -31,11 +31,11 @@
         "plugin:prettier/recommended"
       ],
       "parserOptions": {
-        "project":[ "./tsconfig.json",
-        "code/eMOS/Scripts/tsconfig.json",
-        "code/eMOS/Scripts/tsconfig.spec.json"
-      ]
-        
+        "project": [
+          "./tsconfig.json",
+          "code/eMOS/Scripts/tsconfig.json",
+          "code/eMOS/Scripts/tsconfig.spec.json"
+        ]
       },
       "rules": {
         "prettier/prettier": [
@@ -77,7 +77,8 @@
         "plugin:jest/recommended",
         "plugin:jest-formatting/recommended",
         "plugin:testing-library/react",
-        "plugin:jest-dom/recommended"
+        "plugin:jest-dom/recommended",
+        "@typescript-eslint/parser"
       ]
     },
     // Configuration for e2e testing (Cypress)
