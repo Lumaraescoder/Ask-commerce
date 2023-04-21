@@ -3,7 +3,7 @@ Iremos fazer todas as requisições da fakestore api e criar um e-commerce compl
 Iremos utilizar  
 
 end points a serem consumidos
-Procurar todos os produtos
+,Procurar todos os produtos
 https://fakestoreapi.com/products
 
 Procurar apenas um produto
