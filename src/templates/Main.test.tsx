@@ -1,3 +1,4 @@
+import { Footer } from '@/components/footer';
 import { render, screen, within } from '@testing-library/react';
 
 import { Main } from './Main';
@@ -30,4 +31,11 @@ describe('Main template', () => {
       );
     });
   });
+});
+
+
+test('Footer renders', () => {
+  const { getByTestId } = render(<Footer/>);
+  const footer = getByTestId('footer');
+  expect(footer).toBeInTheDocument();
 });
