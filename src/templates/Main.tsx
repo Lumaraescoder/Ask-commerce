@@ -1,12 +1,6 @@
 
 import type { ReactNode } from 'react';
 
-import { AppConfig } from '@/utils/AppConfig';
-import ProductList from '@/layouts/Products';
-import Link from 'next/link';
-import { Footer } from '@/components/footer';
-
-
 type IMainProps = {
   meta: ReactNode;
   children: ReactNode;
@@ -22,7 +16,7 @@ const Main = (props: IMainProps) => (
 
       <main className="content py-5 text-xl">{props.children}</main>
 
-    <Footer/>
+ 
     </div>
   </div>
 );

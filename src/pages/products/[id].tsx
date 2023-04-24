@@ -1,6 +1,5 @@
 import { Meta } from "@/layouts/Meta";
 import { Main } from "@/templates/Main";
-import product from "next-seo/lib/jsonld/product";
 
 export async function getStaticPaths() {
   const res = await fetch("https://fakestoreapi.com/products");
