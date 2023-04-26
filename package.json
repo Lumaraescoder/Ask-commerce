@@ -32,18 +32,9 @@
     "next-seo": "^5.15.0",
     "next-sitemap": "^4.0.6",
     "react": "^18.2.0",
-<<<<<<< HEAD
-<<<<<<< Updated upstream
-    "react-dom": "^18.2.0"
-=======
-    "react-dom": "^18.2.0",
     "react-router-dom": "^6.10.0",
-    "yup": "^1.1.1"
->>>>>>> Stashed changes
-=======
     "react-dom": "^18.2.0",
     "yup": "^1.1.1"
->>>>>>> parent of db03239 (Revert "Loginpage")
   },
   "devDependencies": {
     "@commitlint/cli": "^17.5.1",
