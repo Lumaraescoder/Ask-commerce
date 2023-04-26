@@ -5,6 +5,7 @@ import { AppConfig } from '@/utils/AppConfig';
 import ProductList from '@/layouts/Products';
 import Link from 'next/link';
 import { Footer } from '@/components/footer';
+import {  Navbar } from '@/components/navbar';
 
 
 type IMainProps = {
@@ -14,6 +15,7 @@ type IMainProps = {
 
 const Main = (props: IMainProps) => (
   <div className="w-full px-1 text-gray-700 antialiased">
+    <Navbar/>
     {props.meta}
 
     <div className="mx-auto max-w-screen-md">
