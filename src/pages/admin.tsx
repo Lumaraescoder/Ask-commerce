@@ -5,12 +5,6 @@ import React from "react";
 
 const Admin = () => {
 
-  const handleLogout = () => {
-
-    router.push('/login'); // redireciona para a página de login após fazer logout
-
-  };
-
   return(
 
     <div>

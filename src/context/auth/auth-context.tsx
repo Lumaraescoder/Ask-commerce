@@ -1,6 +1,4 @@
 import React, { createContext, useState } from "react";
-import { useRouter } from "next/router";
-
 
 type AuthState = {
   token: string;
