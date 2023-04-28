@@ -4,8 +4,7 @@ import { Main } from '@/templates/Main';
 import Products from '@/layouts/Products';
 
 const Index = () => {
-  const router = useRouter();
-
+  
   return (
     <Main
       meta={
