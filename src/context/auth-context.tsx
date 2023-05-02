@@ -1,6 +1,4 @@
 import React, { createContext, useState } from "react";
-import { useRouter } from "next/router";
-
 
 type AuthState = {
   token: string;
@@ -19,8 +17,6 @@ type AuthProviderProps = {
   children: React.ReactNode;
 }
 const { Provider } = AuthContext;
-
-
 
 const AuthProvider = ({ children }: AuthProviderProps) => {
   const [authState, setAuthState] = useState<AuthState>({

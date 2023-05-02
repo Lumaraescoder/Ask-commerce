@@ -31,6 +31,7 @@
     "next": "^13.3.0",
     "next-seo": "^5.15.0",
     "next-sitemap": "^4.0.6",
+    "node-modules": "^1.0.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "swr": "^2.1.5",

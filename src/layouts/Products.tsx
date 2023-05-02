@@ -1,4 +1,6 @@
+import { CartContext } from "@/context/cart-context";
 import Link from "next/link";
+import { useContext } from "react";
 import useSWR from "swr";
 
 interface Products {
@@ -15,6 +17,8 @@ const getAllProducts = (url: string) => fetch(url).then((res) => res.json());
 const Products = () => {
   const { data: products, error, isLoading } = useSWR('https://fakestoreapi.com/products', getAllProducts);
 
+  const {getItemQuantity, increaseItemQuantity, decreaseItemQuantity, removeFromCart} = useContext(CartContext);
+  
   if (error) {
     return <p>Error</p>;
   }
