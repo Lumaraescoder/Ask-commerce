@@ -27,11 +27,14 @@
     "postbuild": "next-sitemap"
   },
   "dependencies": {
+    "formik": "^2.2.9",
     "next": "^13.3.0",
     "next-seo": "^5.15.0",
     "next-sitemap": "^4.0.6",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "swr": "^2.1.5",
+    "yup": "^1.1.1"
   },
   "devDependencies": {
     "@commitlint/cli": "^17.5.1",

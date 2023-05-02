@@ -22,7 +22,11 @@
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "prettier.ignorePath": ".gitignore",
-  "eslint.workingDirectories": [
-    "src"
-  ] // Don't run prettier for files listed in .gitignore
+  "eslint.workingDirectories": ["src"],
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  } // Don't run prettier for files listed in .gitignore
 }
