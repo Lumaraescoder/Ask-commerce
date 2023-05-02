@@ -1,4 +1,4 @@
-import { AuthContext, AuthProvider } from "@/context/auth-context";
+import { AuthContext, AuthProvider } from "@/context/auth/auth-context";
 import router from "next/router";
 import React, { useContext } from "react";
 
@@ -18,8 +18,6 @@ const Admin = () => {
   if (!isUserAuthenticated()) {
 
     router.push('/login');
-
-    return null;
 
   }
 
