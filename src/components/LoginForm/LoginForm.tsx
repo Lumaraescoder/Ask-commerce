@@ -23,59 +23,58 @@ const initialValuesLogin = {
 
 const LoginForm = () => {
 
-    const { authState, setAuthState } = useContext(AuthContext);
+   const { authState, setAuthState } = useContext(AuthContext);
   
-    const router = useRouter();
+   const router = useRouter();
   
-    const handleFormSubmit = async (
+ const handleFormSubmit = async (
   
-      values: UserCredentials,
+    values: UserCredentials,
   
-      { setSubmitting }: FormikHelpers<UserCredentials>
+    { setSubmitting }: FormikHelpers<UserCredentials>
   
-    ) => {
+   ) => {
   
-      await login(values, setSubmitting);
+    await login(values, setSubmitting);
+    
+  };
   
-    };
+   const login = async (
   
-    const login = async (
+    values: UserCredentials,
   
-      values: UserCredentials,
+    setSubmitting: (isSubmitting: boolean) => void
   
-      setSubmitting: (isSubmitting: boolean) => void
+   ) => {
   
-    ) => {
+    const loggedInResponse = await fetch(
   
-      const loggedInResponse = await fetch(
+     "https://fakestoreapi.com/auth/login",
   
-        "https://fakestoreapi.com/auth/login",
+     {
   
-        {
+      method: "POST",
   
-          method: "POST",
+      headers: { "Content-Type": "application/json" },
   
-          headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(values),
   
-          body: JSON.stringify(values),
+     }
   
-        }
+    );
   
-      );
+    
+    const { token } = await loggedInResponse.json();
   
-   
+    localStorage.setItem("token", token);
   
-      const { token } = await loggedInResponse.json();
+    setAuthState({ token });
   
-      localStorage.setItem("token", token);
+    setSubmitting(false);
   
-      setAuthState({ token });
+    router.push("/admin"); // Redirect to protected route after login
   
-      setSubmitting(false);
-  
-      router.push("/admin"); // Redirect to protected route after login
-  
-    };
+   };
 
   return (
     <Formik
@@ -125,17 +124,16 @@ const LoginForm = () => {
       </div>
   </div>
 </section>
-)}</Formik>
+)}
+</Formik>
   );
 };
 
 const LoginPage = () => (
 
-    <AuthProvider>
-  
-      <LoginForm />
-  
-    </AuthProvider>
+   <AuthProvider>
+    <LoginForm />
+   </AuthProvider>
   
   );
 

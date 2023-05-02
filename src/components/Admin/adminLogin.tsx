@@ -5,43 +5,42 @@ import React, { useContext } from "react";
 
 const Admin = () => {
 
-  const { isUserAuthenticated, logout } = useContext(AuthContext);
+ const { isUserAuthenticated, logout } = useContext(AuthContext);
 
-  const handleLogout = () => {
+ const handleLogout = () => {
 
-    logout();
+  logout();
+  router.push('/login');
 
-    router.push('/login');
+ };
 
-  };
+ if (!isUserAuthenticated()) {
 
-  if (!isUserAuthenticated()) {
+ router.push('/login');
 
-    router.push('/login');
+ }
 
-  }
+ return(
 
-  return(
+ <div>
 
-    <div>
+ <h1>Welcome to the Admin Page</h1>
 
-      <h1>Welcome to the Admin Page</h1>
+ <button onClick={handleLogout}>Logout</button>
 
-      <button onClick={handleLogout}>Logout</button>
+ </div>
 
-    </div>
-
-  )
+ )
 
 }
 
 const AdminPageWithAuth = () => (
 
-  <AuthProvider>
+ <AuthProvider>
 
-    <Admin />
+  <Admin />
 
-  </AuthProvider>
+ </AuthProvider>
 
 );
 
