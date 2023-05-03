@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { use, useState } from 'react';
 import useSWR from "swr";
+import { useRouter } from 'next/router'
 
 interface Categories {
 
@@ -13,13 +14,13 @@ const getAllProducts = (url: string) => fetch(url).then((res) => res.json());
 const SubMenu = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { data: products, error, isLoading } = useSWR('https://fakestoreapi.com/products/categories', getAllProducts);
+  const router = useRouter();
   
   const setCategory = (category: string) => {
     localStorage.setItem('category', category);
+    router.reload();
+    
   }
-
-
-
 
   if (error) 
   return
