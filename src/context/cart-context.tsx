@@ -23,18 +23,17 @@ type CartProviderProps = {
 }
 
 const CartProvider = ({ children }: CartProviderProps) => {
-  const [cart, setCartItems] = useState<Cart>({} as Cart);
+  const [cartItems, setCartItems] = useState<Cart>({} as Cart);
 
   function getItemQuantity(id:number){
-    return cart.products.find(item => item.productId === id)?.quantity || 0
+    return cartItems.products.find(item => item.productId === id)?.quantity || 0
   }
 
-  function increaseItemQuantity(product: number, quantity: number){}
+  function increaseItemQuantity(product: number, quantity: number){
+    
+  }
   function decreaseItemQuantity(product: number, quantity: number){}
   function removeFromCart(){}
-
-
-  
 
  const CartContextValues: CartContextType = {
   cart:{} as Cart,

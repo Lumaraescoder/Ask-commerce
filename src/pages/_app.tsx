@@ -5,6 +5,7 @@ import type { AppProps } from 'next/app';
 import { Navbar } from '@/components/Navbar/Navbar';
 import { Footer } from '@/components/Footer/footer';
 import { AuthProvider } from '@/context/auth/auth-context';
+import { CartProvider } from '@/context/cart-context';
 
 const MyApp = ({ Component, pageProps }: AppProps) => {
   return (
