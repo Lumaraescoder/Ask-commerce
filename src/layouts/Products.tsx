@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import useSWR from "swr";
 
 interface Products {
@@ -12,8 +13,23 @@ interface Products {
 
 const getAllProducts = (url: string) => fetch(url).then((res) => res.json());
 
+
+
+
 const Products = () => {
-  const { data: products, error, isLoading } = useSWR('https://fakestoreapi.com/products', getAllProducts);
+  const { data, error, isLoading } = useSWR('https://fakestoreapi.com/products', getAllProducts);
+  const [selectedCategory, setSelectedCategory] = useState<string>("");
+  const [ products, setProducts ] = useState<Products[]>(data);
+  console.log('data', data);
+  useEffect(() => {
+    const itemChoosed = localStorage.getItem('category') as string;
+    
+    setSelectedCategory(itemChoosed);
+  }, [products, data]) 
+
+
+ /* const filteredProducts = selectedCategory === "" ? product : (product as any).filter(products => products.title === selectedCategory);
+  console.log('sfilteredProducts ->', filteredProducts); */
 
   if (error) {
     return <p>Error</p>;
@@ -27,7 +43,7 @@ const Products = () => {
     <div>
       <h1 className="flex justify-center mb-4 text-3xl font-extrabold text-gray-900 dark:text-white md:text-5xl lg:text-6xl"><span className="text-transparent bg-clip-text bg-gradient-to-r to-blue-600 from-sky-400">Ask-Commerce</span></h1>
       <div className="grid grid-cols-1 justify-center container gap-8 mt-8 mb-8 mx-auto xl:mt-12 xl:gap-16 md:grid-cols-2 xl:grid-cols-3">
-        {products.map((product: Products) => (
+        {products && products.map((product: Products) => (
           <div className="max-w-xs overflow-hidden bg-white rounded-lg shadow-lg dark:bg-gray-800" key={product.id}>
             <div className="min-h-[6rem] px-4 py-2">
               <h1 className="text-l font-bold text-gray-800 uppercase dark:text-white">{product.title}</h1>
