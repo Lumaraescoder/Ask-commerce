@@ -1,49 +1,46 @@
-import { AuthContext, AuthProvider } from "@/context/auth-context";
+import { AuthContext, AuthProvider } from "@/context/auth/auth-context";
 import router from "next/router";
 import React, { useContext } from "react";
 
 
 const Admin = () => {
 
-  const { isUserAuthenticated, logout } = useContext(AuthContext);
+ const { isUserAuthenticated, logout } = useContext(AuthContext);
 
-  const handleLogout = () => {
+ const handleLogout = () => {
 
-    logout();
+  logout();
+  router.push('/login');
 
-    router.push('/login');
+ };
 
-  };
+ if (!isUserAuthenticated()) {
 
-  if (!isUserAuthenticated()) {
+ router.push('/login');
 
-    router.push('/login');
+ }
 
-    return null;
+ return(
 
-  }
+ <div>
 
-  return(
+ <h1>Welcome to the Admin Page</h1>
 
-    <div>
+ <button onClick={handleLogout}>Logout</button>
 
-      <h1>Welcome to the Admin Page</h1>
+ </div>
 
-      <button onClick={handleLogout}>Logout</button>
-
-    </div>
-
-  )
+ )
 
 }
 
 const AdminPageWithAuth = () => (
 
-  <AuthProvider>
+ <AuthProvider>
 
-    <Admin />
+  <Admin />
 
-  </AuthProvider>
+ </AuthProvider>
 
 );
 

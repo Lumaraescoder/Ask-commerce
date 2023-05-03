@@ -21,7 +21,7 @@ const { Provider } = AuthContext;
 const AuthProvider = ({ children }: AuthProviderProps) => {
   const [authState, setAuthState] = useState<AuthState>({
     token: typeof window !== "undefined" ? localStorage.getItem('token') || '' : '',
-    });
+   });
 
  const isUserAuthenticated = () => !!authState.token;
 
