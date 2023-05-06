@@ -1,5 +1,6 @@
 import { CartContext } from "@/context/cart-context";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import { useContext } from "react";
 import useSWR from "swr";
 
@@ -14,8 +15,33 @@ interface Products {
 
 const getAllProducts = (url: string) => fetch(url).then((res) => res.json());
 
+
+
+
 const Products = () => {
-  const { data: products, error, isLoading } = useSWR('https://fakestoreapi.com/products', getAllProducts);
+  const { data, error, isLoading } = useSWR('https://fakestoreapi.com/products', getAllProducts);
+  const [selectedCategory, setSelectedCategory] = useState<string>("");
+  const [ products, setProducts ] = useState<Products[]>([]);
+  const [itemChoosed, setItemChoosed] = useState<string>("");
+
+  useEffect(() => {
+
+    setItemChoosed(localStorage.getItem('category') as string);
+  },);
+
+  useEffect(() => {
+    if(data){
+      setProducts(data);
+    }
+  }, [data]);
+
+  useEffect(() => {
+    
+    setSelectedCategory(itemChoosed);
+  }, [itemChoosed]);
+
+  
+  const filteredProducts = selectedCategory === "" ? products : products?.filter(product => product.category === selectedCategory);
 
   const {getItemQuantity, increaseItemQuantity, decreaseItemQuantity, removeFromCart} = useContext(CartContext);
   
@@ -31,7 +57,7 @@ const Products = () => {
     <div>
       <h1 className="flex justify-center mb-4 text-3xl font-extrabold text-gray-900 dark:text-white md:text-5xl lg:text-6xl"><span className="text-transparent bg-clip-text bg-gradient-to-r to-blue-600 from-sky-400">Ask-Commerce</span></h1>
       <div className="grid grid-cols-1 justify-center container gap-8 mt-8 mb-8 mx-auto xl:mt-12 xl:gap-16 md:grid-cols-2 xl:grid-cols-3">
-        {products.map((product: Products) => (
+        {products && filteredProducts.map((product: Products) => (
           <div className="max-w-xs overflow-hidden bg-white rounded-lg shadow-lg dark:bg-gray-800" key={product.id}>
             <div className="min-h-[6rem] px-4 py-2">
               <h1 className="text-l font-bold text-gray-800 uppercase dark:text-white">{product.title.slice(0,25)}</h1>
