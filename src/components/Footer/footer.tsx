@@ -167,3 +167,5 @@ export const Footer = function () {
     </footer>
   );
 };
+
+export default Footer
