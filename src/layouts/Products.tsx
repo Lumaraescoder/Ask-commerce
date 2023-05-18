@@ -1,7 +1,5 @@
-import { CartContext } from "@/context/cart-context";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { useContext } from "react";
 import useSWR from "swr";
 
 interface Products {
