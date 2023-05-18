@@ -1,4 +1,4 @@
-export const Footer = function () {
+export const Footer =  () => {
   return (
     <footer className="bg-white dark:bg-gray-900">
       <div className="container p-6 mx-auto">
