@@ -35,3 +35,7 @@ https://fakestoreapi.com/auth/login
 npm run dev
 npm run tests
 npm run cypress
+
+Testing user authentication:
+username: johnd
+password: m38rmF$
