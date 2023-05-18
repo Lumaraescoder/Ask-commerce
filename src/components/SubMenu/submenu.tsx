@@ -1,38 +1,35 @@
-import { use, useState } from 'react';
+import { use, useState } from "react";
 import useSWR from "swr";
-import { useRouter } from 'next/router'
+import { useRouter } from "next/router";
 
 interface Categories {
-
   title: string;
-
 }
 
 const getAllProducts = (url: string) => fetch(url).then((res) => res.json());
 
- 
 const SubMenu = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const { data: products, error, isLoading } = useSWR('https://fakestoreapi.com/products/categories', getAllProducts);
+  const {
+    data: products,
+    error,
+    isLoading,
+  } = useSWR("https://fakestoreapi.com/products/categories", getAllProducts);
   const router = useRouter();
-  
+
   const setCategory = (category: string) => {
-    localStorage.setItem('category', category);
+    localStorage.setItem("category", category);
     router.reload();
-    
-  }
+  };
 
-  if (error) 
-  return
-      <p>Error</p>
+  if (error) return;
+  <p>Error</p>;
 
-  if (isLoading)
-  return
-      <p>Loading...</p>
+  if (isLoading) return;
+  <p>Loading...</p>;
 
   return (
     <div className="relative inline-block">
-      
       {/* Dropdown toggle button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
@@ -59,10 +56,13 @@ const SubMenu = () => {
           className="absolute right-0 z-20 w-48 py-2 mt-2 origin-top-right bg-white rounded-md shadow-xl dark:bg-gray-800"
         >
           {products.map((product: Categories) => (
-                <button onClick={() => setCategory(product)} className="block px-4 py-3 text-sm text-gray-600 capitalize transition-colors duration-300 transform dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 dark:hover:text-white"
-                >{product}</button>
-
-            ))}
+            <button
+              onClick={() => setCategory(product)}
+              className="block px-4 py-3 text-sm text-gray-600 capitalize transition-colors duration-300 transform dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 dark:hover:text-white"
+            >
+              {product}
+            </button>
+          ))}
           <a
             href="#"
             className="block px-4 py-3 text-sm text-gray-600 capitalize transition-colors duration-300 transform dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 dark:hover:text-white"
