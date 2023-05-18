@@ -1,11 +1,6 @@
-import LoginForm from '@/components/LoginForm/LoginForm';
-import Link from 'next/link';
-
-
+import LoginForm from "@/components/LoginForm/LoginForm";
 
 const Login = () => {
-  
- 
   return (
     <div>
       <LoginForm />
