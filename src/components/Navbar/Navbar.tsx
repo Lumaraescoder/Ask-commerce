@@ -33,8 +33,10 @@ export const Navbar = () => {
 
             <SubMenu />
           </div>
-        </div>
-      </nav>
-    </>
+      </div>
+  </nav>
+</>
   );
 };
+
+  export default Navbar;
