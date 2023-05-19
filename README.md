@@ -1,6 +1,5 @@
-E-commerce Dashboard
-This project is a comprehensive e-commerce solution built with React and TypeScript. It features an advanced control panel with statistical and administrative capabilities.
-#
+Features to be implemented
+
 Sales Statistics
 Create line or bar charts to display daily, weekly, or monthly sales, providing a clear view of our business performance over time.
 Implement filters to allow users to select a specific period and view corresponding sales statistics. This will help identify trends and consumption patterns.
