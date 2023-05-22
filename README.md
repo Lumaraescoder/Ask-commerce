@@ -27,5 +27,3 @@ Implement CRUD (Create, Read, Update, Delete) features to allow administrators t
 Provide a clear overview of pending orders, allowing administrators to update the order status, add notes, and generate invoices. This will help maintain an organized and efficient workflow.
 #
 Implement authentication and access control to ensure that only authorized administrators can access the administrative panel. Security is crucial for protecting our data and operations.
-#
-Please note that this is just an outline of the features. For more detailed information, refer to the project documentation.
