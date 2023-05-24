@@ -11,11 +11,11 @@ const Admin = () => {
     router.push("/login");
   };
 
-  useEffect(() => {
-    if (!isUserAuthenticated()) {
-      router.push("/login");
-    }
-  }, [isUserAuthenticated, router]);
+  // useEffect(() => {
+  //   if (!isUserAuthenticated()) {
+  //     router.push("/login");
+  //   }
+  // }, [isUserAuthenticated, router]);
 
   return (
     <div>
