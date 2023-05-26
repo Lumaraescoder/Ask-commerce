@@ -3,6 +3,7 @@ import Link from "next/link";
 import useSWR from "swr";
 import { useRouter } from "next/router";
 import { useState } from "react";
+import { Formik } from "formik";
 
 interface Categories {
   title: string;
@@ -29,6 +30,9 @@ export const Navbar = () => {
   if (isLoading) return <p>Loading...</p>;
 
   return (
+
+  
+    
     <div>
       <nav className="flex flex-wrap items-center dark:bg-gray-900 p-3">
         <Link href="/">
@@ -43,6 +47,9 @@ export const Navbar = () => {
             
                 Login
               
+            </Link >
+            <Link href="/register">
+              Register
             </Link>
             <div className="relative inline-block">
               <button
@@ -90,6 +97,7 @@ export const Navbar = () => {
         </div>
       </nav>
     </div>
+
   );
 };
 

@@ -1,55 +1,24 @@
-import styled, { css, useTheme } from 'styled-components';
+import styled from "styled-components";
+import { ButtonProps } from "./Button";
 
-const StyledButton = styled.button<{
-  
-  clear: boolean;
-  large: boolean;
-  withIcon: boolean;
-  round: boolean;
-}>(
-  ({
-    clear,
-    large,
-    round,
-    withIcon,
-    theme: { color, boxShadow, borderRadius },
-  }) =>
-    css`ß
-      outline: none;
-      border: 0;
-      font-family: 'Hind';
-      border-radius: ${round ? borderRadius.xl : borderRadius.xs};
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      padding: ${withIcon
-        ? '0.7rem'
-        : large
-        ? '1.125rem 1rem'
-        : '0.875rem 1rem'};
-      color: ${clear ? color.primaryText : color.buttonText};
-      transition: box-shadow 150ms ease-in;
-      z-index: 1;
-      background-color: ${clear ? color.buttonClear : color.buttonPrimary};
-      &:hover {
-        cursor: pointer;
-        background-color: ${clear
-          ? color.buttonClearHover
-          : color.buttonPrimaryHover};
-      }
-      &:focus {
-        box-shadow: ${boxShadow.outerBorder};
-      }
-      &:disabled {
-        background-color: ${clear ? color.buttonClear : color.buttonPrimary};
-        opacity: 0.4;
-      }
-      @media ${breakpoints.M} {
-        padding: ${withIcon
-          ? '1rem'
-          : large
-          ? '1.125rem 1.5rem'
-          : '0.875rem 1.5rem'};
-      }
-    `
-);
+
+
+export const StyledButton = styled.button<ButtonProps>`
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+  ${(props) => {
+    switch (props.variant) {
+      case "primary":
+        return ` background-color: #007bff; color: #fff; `;
+      case "secondary":
+        return ` background-color: #6c757d; color: #fff; `;
+      case "tertiary":
+        return ` background-color: transparent; color: #007bff; border: 1px solid #007bff; `;
+      default:
+        return "";
+    }
+  }}
+`;
