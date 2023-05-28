@@ -1,4 +1,4 @@
-import { AuthContext, AuthProvider } from "@/context/auth/auth-context";
+import { AuthContext, AuthProvider } from "@/auth/auth-context";
 import { useEffect, useContext } from "react";
 import { useRouter } from "next/router";
 

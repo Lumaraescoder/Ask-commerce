@@ -1,4 +1,4 @@
-import { AuthContext, AuthProvider } from "@/context/auth/auth-context";
+import { AuthContext, AuthProvider } from "@/auth/auth-context";
 import { Formik, FormikHelpers, Field, Form } from "formik";
 import { useRouter } from "next/router";
 import { useContext } from "react";

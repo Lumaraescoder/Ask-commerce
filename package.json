@@ -26,6 +26,8 @@
     "postbuild": "next-sitemap"
   },
   "dependencies": {
+    "@heroicons/react": "^1.0.6",
+    "@tremor/react": "^2.8.3",
     "formik": "^2.2.9",
     "next": "^13.3.0",
     "next-seo": "^5.15.0",

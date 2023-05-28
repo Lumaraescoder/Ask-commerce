@@ -1,94 +1,86 @@
 import React from "react";
-import Link from "next/link";
-import useSWR from "swr";
-import { useRouter } from "next/router";
-import { useState } from "react";
 
-interface Categories {
-  title: string;
-}
+import Submenu from "../SubMenu/SubMenu";
 
-const getAllProducts = (url: string) => fetch(url).then((res) => res.json());
 
 export const Navbar = () => {
-  const [isOpen, setIsOpen] = useState(false);
-
-  const {
-    data: products,
-    error,
-    isLoading,
-  } = useSWR("https://fakestoreapi.com/products/categories", getAllProducts);
-  const router = useRouter();
-
-  const setCategory = (category: string) => {
-    localStorage.setItem("category", category);
-    router.reload();
-  };
-
-  if (error) return <p>Error</p>;
-  if (isLoading) return <p>Loading...</p>;
 
   return (
     <div>
-      <nav className="flex flex-wrap items-center dark:bg-gray-900 p-3">
-        <Link href="/">
- 
-            <span className="text-xl font-bold uppercase tracking-wide text-white"/>
-              Ask-Commerce
-       
-        </Link>
-        <div className="hidden w-full lg:inline-flex lg:w-auto lg:grow">
-          <div className="flex w-full flex-col items-start lg:ml-auto lg:inline-flex lg:h-auto lg:w-auto lg:flex-row lg:items-center">
-            <Link href="/">
-            
-                Login
-              
-            </Link>
-            <div className="relative inline-block">
-              <button
-                onClick={() => setIsOpen(!isOpen)}
-                className="relative z-10 block p-2 text-gray-700 bg-white border border-transparent rounded-md dark:text-white focus:border-blue-500 focus:ring-opacity-40 dark:focus:ring-opacity-40 focus:ring-blue-300 dark:focus:ring-blue-400 focus:ring dark:bg-gray-800 focus:outline-none"
-              >
-                <svg
-                  className="w-5 h-5 text-gray-800 dark:text-white"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-              </button>
-
-              {isOpen && (
-                <div
-                  onClick={() => setIsOpen(false)}
-                  className="absolute right-0 z-20 w-48 py-2 mt-2 origin-top-right bg-white rounded-md shadow-xl dark:bg-gray-800"
-                >
-                  {products.map((product: Categories) => (
-                    <button
-                      key={product.title}
-                      onClick={() => setCategory(product.title)}
-                      className="block px-4 py-3 text-sm text-gray-600 capitalize transition-colors duration-300 transform dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 dark:hover:text-white"
-                    >
-                      {product.title}
-                    </button>
-                  ))}
-                  <a
-                    href="#"
-                    className="block px-4 py-3 text-sm text-gray-600 capitalize transition-colors duration-300 transform dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 dark:hover:text-white"
+      <nav className="bg-gray-800">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-16">
+            {/* Left section - Links */}
+            <div className="flex items-center">
+              <div className="flex-shrink-0">
+                <a href="/" className="text-white font-bold text-xl">
+                  Ask-commerce
+                </a>
+              </div>
+              <div className="hidden md:block">
+                <div className="ml-10 flex items-baseline space-x-4">
+                  {/* <a
+                    href="/"
+                    className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
                   >
-                    Sign Out
-                  </a>
+                    Home
+                  </a> */}
+    
+                  {/* Add more links as needed */}
                 </div>
-              )}
+              </div>
+            </div>
+            {/* Middle section - Search Bar */}
+            <div className="flex justify-center flex-1">
+              <div className="w-full max-w-sm">
+                <label htmlFor="search" className="sr-only">
+                  Search
+                </label>
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <svg
+                      className="h-5 w-5 text-gray-400"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        clipRule="evenodd"
+                        d="M8 0C3.58 0 0 3.58 0 8C0 12.42 3.58 16 8 16C9.44 16 10.8 15.55 12 14.74V17.25L15.25 14L17 15.25L13.75 18.5H17V20H13.75L12 18.75L10.25 20H7V18.5H10.25L9 17.25V14.74C6.13 16.54 3.46 13.87 5.26 11H2V9H5.26C3.46 6.13 6.13 3.46 9 5.26V2H10V5.26C13.87 3.46 16.54 6.13 14.74 9H18V11H14.74C16.54 13.87 13.87 16.54 11 14.74V12H9V14.74C5.13 13.36 2.36 9.61 4.74 6H1V4H4.74C2.36 0.39 6.13 -2.28 9 0H8Z"
+                      />
+                    </svg>
+                  </div>
+                  <input
+                    id="search"
+                    className="block w-full pl-10 pr-3 py-2 rounded-md placeholder-gray-500 border-gray-300 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                    type="search"
+                    placeholder="Search"
+                  />
+                </div>
+              </div>
+            </div>
+            {/* Right section */}
+            <div className="flex items-center">
+            <div className="ml-10 flex items-baseline space-x-4">
+                  <a
+                    href="/login"
+                    className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+                  >
+                    Login
+                  </a>
+                  <a
+                    href="/register"
+                    className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+                  >
+                    Register
+                  </a>
+                  {/* Add more links as needed */}
+                </div>
             </div>
           </div>
         </div>
       </nav>
+      <Submenu/>
     </div>
   );
 };
