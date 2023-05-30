@@ -7,16 +7,25 @@ import * as yup from "yup";
 type UserCredentials = {
   username: string;
   password: string;
+  firstname: string;
+  lastname: string;
+  email: string;
 };
 
-const loginSchema = yup.object().shape({
+const RegisterSchema = yup.object().shape({
   username: yup.string().required("required"),
   password: yup.string().required("required"),
+  firstname: yup.string().required("required"),
+  lastname: yup.string().required("required"),
+  email: yup.string().required("required"),
 });
 
 const initialValuesLogin = {
+  firstname: "",
+  lastname: "",
   username: "",
   password: "",
+  email: "",
 };
 
 const RegisterForm = () => {
@@ -29,10 +38,10 @@ const RegisterForm = () => {
 
     { setSubmitting }: FormikHelpers<UserCredentials>
   ) => {
-    await login(values, setSubmitting);
+    await register(values, setSubmitting);
   };
 
-  const login = async (
+  const register = async (
     values: UserCredentials,
 
     setSubmitting: (isSubmitting: boolean) => void
@@ -64,7 +73,7 @@ const RegisterForm = () => {
     <Formik
       onSubmit={handleFormSubmit}
       initialValues={initialValuesLogin}
-      validationSchema={loginSchema}
+      validationSchema={RegisterSchema}
     >
       {
        <section className="bg-gray-50 dark:bg-gray-900">
@@ -135,7 +144,7 @@ const RegisterForm = () => {
                    htmlFor="username"
                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                  >
-                   Your last name
+                   Your username
                  </label>
                  <Field
                    type="username"
