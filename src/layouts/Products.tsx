@@ -58,7 +58,7 @@ const Products = () => {
         <span className="text-transparent bg-clip-text bg-gradient-to-r to-blue-600 from-sky-400">
         </span>
       </h1>
-      <div className="grid grid-cols-1 justify-center container gap-8 mt-8 mb-8 mx-auto xl:mt-12 xl:gap-16 md:grid-cols-2 xl:grid-cols-3">
+      <div className="grid grid-cols-1 justify-center container gap-8 mt-8 mb-8 mx-auto xl:mt-12 xl:gap-16 md:grid-cols-2 xl:grid-cols-3 smallCards expandCards">
       {filteredProducts &&
           data.map((product: Products) => (
             <div
