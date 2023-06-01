@@ -1,4 +1,4 @@
-import { AuthContext, AuthProvider } from "@/context/auth/auth-context";
+import { AuthContext, AuthProvider } from "@/auth/auth-context";
 import Admin from "@/pages/admin";
 import { render } from "@testing-library/react";
 import { createMemoryHistory } from "history";
