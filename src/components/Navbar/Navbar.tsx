@@ -9,11 +9,11 @@ export const Navbar = () => {
     <div>
       <nav className="bg-gray-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
+          <div className="flex items-center justify-between h-16 search-bar">
             {/* Left section - Links */}
-            <div className="flex items-center">
+            <div className="flex items-center ">
               <div className="flex-shrink-0">
-                <a href="/" className="text-white font-bold text-xl">
+                <a href="/" className="text-white font-bold text-xl ask-logo">
                   Ask-commerce
                 </a>
               </div>
@@ -31,9 +31,9 @@ export const Navbar = () => {
               </div>
             </div>
             {/* Middle section - Search Bar */}
-            <div className="flex justify-center flex-1">
+            <div className="flex justify-center flex-1 ">
               <div className="w-full max-w-sm">
-                <label htmlFor="search" className="sr-only">
+                <label htmlFor="search" className="sr-only ">
                   Search
                 </label>
                 <div className="relative">
