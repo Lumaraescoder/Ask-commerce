@@ -1,5 +1,7 @@
+import { ProductContext } from "@/pages/ProductContext";
+import product from "next-seo/lib/jsonld/product";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import useSWR from "swr";
 
 interface Products {
@@ -13,7 +15,7 @@ interface Products {
 
 const getAllProducts = (url: string) => fetch(url).then((res) => res.json());
 
-const Products = () => {
+const Products: React.FC = () => {
   const { data, error, isLoading } = useSWR(
     "https://fakestoreapi.com/products",
     getAllProducts
@@ -22,6 +24,10 @@ const Products = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>("");
   const [products, setProducts] = useState<Products[]>([]);
   const [itemChoosed, setItemChoosed] = useState<string>("");
+  
+  const { productData } = useContext(ProductContext);
+
+  const filteredProducts = productData.length === 0 ? data : productData;
 
   useEffect(() => {
     setItemChoosed(localStorage.getItem("category") as string);
@@ -37,10 +43,9 @@ const Products = () => {
     setSelectedCategory(itemChoosed);
   }, [itemChoosed]);
 
-  const filteredProducts =
-    selectedCategory === ""
-      ? products
-      : products?.filter((product) => product.category === selectedCategory);
+
+
+      console.log("productData->", productData);
 
 
   if (error) {
@@ -59,8 +64,8 @@ const Products = () => {
         </span>
       </h1>
       <div className="grid grid-cols-1 justify-center container gap-8 mt-8 mb-8 mx-auto xl:mt-12 xl:gap-16 md:grid-cols-2 xl:grid-cols-3 smallCards expandCards">
-      {filteredProducts &&
-          data.map((product: Products) => (
+      {data &&
+          filteredProducts.map((product: Products) => (
             <div
             className="max-w-xs overflow-hidden bg-white rounded-lg shadow-lg dark:bg-gray-800"
             key={product.id}
@@ -88,6 +93,8 @@ const Products = () => {
               </Link>
             </div>
           </div>
+
+
           ))}
       </div>
     </div>

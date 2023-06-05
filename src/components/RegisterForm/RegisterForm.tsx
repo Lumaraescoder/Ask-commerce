@@ -1,7 +1,7 @@
-import { AuthContext, AuthProvider } from "@/context/auth/auth-context";
+//import { AuthContext, AuthProvider } from "@/context/auth/auth-context";
 import { Formik, FormikHelpers, Field, Form } from "formik";
 import { useRouter } from "next/router";
-import { useContext } from "react";
+//import { useContext } from "react";
 import * as yup from "yup";
 
 type UserCredentials = {
@@ -29,7 +29,7 @@ const initialValuesLogin = {
 };
 
 const RegisterForm = () => {
-  const { setAuthState } = useContext(AuthContext);
+  //const { setAuthState } = useContext(AuthContext);
 
   const router = useRouter();
 
@@ -62,7 +62,7 @@ const RegisterForm = () => {
 
     localStorage.setItem("token", token);
 
-    setAuthState({ token });
+   // setAuthState({ token });
 
     setSubmitting(false);
 
@@ -77,7 +77,7 @@ const RegisterForm = () => {
     >
       {
        <section className="bg-gray-50 dark:bg-gray-900">
-       <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
+       <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto lg:py-0 registerAccount">
          <a
            href="#"
            className="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white"

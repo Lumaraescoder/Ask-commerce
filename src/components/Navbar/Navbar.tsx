@@ -1,6 +1,5 @@
 import React from "react";
 
-import Submenu from "../SubMenu/SubMenu";
 
 
 export const Navbar = () => {
@@ -80,7 +79,6 @@ export const Navbar = () => {
           </div>
         </div>
       </nav>
-      <Submenu/>
     </div>
   );
 };
