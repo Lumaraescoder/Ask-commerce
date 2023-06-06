@@ -2,7 +2,7 @@ import { Meta } from "@/layouts/Meta";
 import { Main } from "@/templates/Main";
 import Products from "@/layouts/Products";
 import Submenu from "@/components/SubMenu/SubMenu";
-import { ProductProvider } from "./ProductContext";
+import { ProductProvider } from "../contexts/ProductContext";
 
 const Index = () => {
   return (

@@ -1,7 +1,7 @@
 import React, { useContext} from "react";
 import useSWR from "swr";
 import Link from "next/link";
-import { ProductContext } from "@/pages/ProductContext";
+import { ProductContext } from "@/contexts/ProductContext";
 
 interface Products {
   id: number;

@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { useRouter } from "next/router";
 import useSWR from "swr";
-import { ProductContext } from "@/pages/ProductContext";
+import { ProductContext } from "@/contexts/ProductContext";
 
 const fetcher = async (url: string) => {
   const response = await fetch(url);
