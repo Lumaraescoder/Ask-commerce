@@ -1,6 +1,8 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { useRouter } from "next/router";
 import useSWR from "swr";
+import Products from "@/layouts/Products";
+import { ProductContext } from "@/pages/ProductContext";
 
 const fetcher = async (url: string) => {
   const response = await fetch(url);
@@ -17,6 +19,10 @@ const Submenu: React.FC = () => {
   }
 
   const [selectedCategory, setSelectedCategory] = useState("");
+
+  
+  const { productData, setProductData } = useContext(ProductContext);
+
   const { data: categories, error } = useSWR(
     "https://fakestoreapi.com/products/categories",
     fetcher
@@ -28,8 +34,19 @@ const Submenu: React.FC = () => {
     { shouldRetryOnError: false, revalidateOnFocus: false }
   );
 
-  const handleCategoryClick = (category: string) => {
+  const handleCategoryClick = async (category: string) => {
     setSelectedCategory(category);
+    console.log("selectedCategory->", selectedCategory);
+
+    try {
+      const response = await fetch(
+        `https://fakestoreapi.com/products/category/${category}`
+      );
+      const data = await response.json();
+      setProductData(data);
+    } catch (error) {
+      console.error("Error fetching products", error);
+    }
   };
 
   if (error) {
