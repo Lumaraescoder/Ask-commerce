@@ -1,15 +1,15 @@
-import { AuthContext, AuthProvider } from "@/auth/auth-context";
-import { useEffect, useContext } from "react";
-import { useRouter } from "next/router";
+import {  AuthProvider } from "@/auth/auth-context";
+// import {  useContext } from "react";
+// import { useRouter } from "next/router";
 
 const Admin = () => {
-  const { isUserAuthenticated, logout } = useContext(AuthContext);
-  const router = useRouter();
+  // const { isUserAuthenticated, logout } = useContext(AuthContext);
+  // const router = useRouter();
 
-  const handleLogout = () => {
-    logout();
-    router.push("/login");
-  };
+  // const handleLogout = () => {
+  //   logout();
+  //   router.push("/login");
+  // };
 
   // useEffect(() => {
   //   if (!isUserAuthenticated()) {
@@ -20,7 +20,7 @@ const Admin = () => {
   return (
     <div>
       <h1>Welcome to the Admin Page</h1>
-      <button onClick={handleLogout}>Logout</button>
+      {/* <button onClick={handleLogout}>Logout</button> */}
     </div>
   );
 };
