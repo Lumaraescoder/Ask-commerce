@@ -1,7 +1,6 @@
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import { useRouter } from "next/router";
 import useSWR from "swr";
-import Products from "@/layouts/Products";
 import { ProductContext } from "@/pages/ProductContext";
 
 const fetcher = async (url: string) => {
@@ -18,26 +17,14 @@ const Submenu: React.FC = () => {
     return null;
   }
 
-  const [selectedCategory, setSelectedCategory] = useState("");
-
-  
-  const { productData, setProductData } = useContext(ProductContext);
+  const { setProductData } = useContext(ProductContext);
 
   const { data: categories, error } = useSWR(
     "https://fakestoreapi.com/products/categories",
     fetcher
   );
 
-  const { data: products } = useSWR(
-    `https://fakestoreapi.com/products/category/${selectedCategory}`,
-    fetcher,
-    { shouldRetryOnError: false, revalidateOnFocus: false }
-  );
-
   const handleCategoryClick = async (category: string) => {
-    setSelectedCategory(category);
-    console.log("selectedCategory->", selectedCategory);
-
     try {
       const response = await fetch(
         `https://fakestoreapi.com/products/category/${category}`
@@ -68,21 +55,6 @@ const Submenu: React.FC = () => {
             </li>
           ))}
       </ul>
-
-      {/* {selectedCategory && (
-        <div>
-          <h2>Products in {selectedCategory}</h2>
-          {products ? (
-            <ul>
-              {products.map((product: any) => (
-                <li key={product.id}>{product.title}</li>
-              ))}
-            </ul>
-          ) : (
-            <div>Loading products...</div>
-          )}
-        </div>
-      )} */}
     </nav>
   );
 };

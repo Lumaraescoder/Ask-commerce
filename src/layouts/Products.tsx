@@ -1,8 +1,7 @@
-import { ProductContext } from "@/pages/ProductContext";
-import product from "next-seo/lib/jsonld/product";
-import Link from "next/link";
-import { useContext, useEffect, useState } from "react";
+import React, { useContext} from "react";
 import useSWR from "swr";
+import Link from "next/link";
+import { ProductContext } from "@/pages/ProductContext";
 
 interface Products {
   id: number;
@@ -13,7 +12,8 @@ interface Products {
   image: string;
 }
 
-const getAllProducts = (url: string) => fetch(url).then((res) => res.json());
+const getAllProducts = (url: string) =>
+  fetch(url).then((res) => res.json());
 
 const Products: React.FC = () => {
   const { data, error, isLoading } = useSWR(
@@ -21,32 +21,9 @@ const Products: React.FC = () => {
     getAllProducts
   );
 
-  const [selectedCategory, setSelectedCategory] = useState<string>("");
-  const [products, setProducts] = useState<Products[]>([]);
-  const [itemChoosed, setItemChoosed] = useState<string>("");
-  
   const { productData } = useContext(ProductContext);
 
   const filteredProducts = productData.length === 0 ? data : productData;
-
-  useEffect(() => {
-    setItemChoosed(localStorage.getItem("category") as string);
-  });
-
-  useEffect(() => {
-    if (data) {
-      setProducts(data);
-    }
-  }, [data]);
-
-  useEffect(() => {
-    setSelectedCategory(itemChoosed);
-  }, [itemChoosed]);
-
-
-
-      console.log("productData->", productData);
-
 
   if (error) {
     return <p>Error</p>;
@@ -58,15 +35,12 @@ const Products: React.FC = () => {
 
   return (
     <div>
-      
       <h1 className="flex justify-center mb-4 text-3xl font-extrabold text-gray-900 dark:text-white md:text-5xl lg:text-6xl">
-        <span className="text-transparent bg-clip-text bg-gradient-to-r to-blue-600 from-sky-400">
-        </span>
+        <span className="text-transparent bg-clip-text bg-gradient-to-r to-blue-600 from-sky-400"></span>
       </h1>
       <div className="grid grid-cols-1 justify-center container gap-8 mt-8 mb-8 mx-auto xl:mt-12 xl:gap-16 md:grid-cols-2 xl:grid-cols-3 smallCards expandCards">
-      {data &&
-          filteredProducts.map((product: Products) => (
-            <div
+        {filteredProducts.map((product: Products) => (
+          <div
             className="max-w-xs overflow-hidden bg-white rounded-lg shadow-lg dark:bg-gray-800"
             key={product.id}
           >
@@ -86,16 +60,14 @@ const Products: React.FC = () => {
               <h1 className="text-lg font-bold text-white">
                 {product.price}€
               </h1>
-              <Link className="no-underline" href={`/products/${product.id}`}>
+              <Link href={`/products/${product.id}`}>
                 <button className="px-2 py-1 text-xs font-semibold text-gray-900 uppercase transition-colors no-underline duration-300 bg-white rounded hover:bg-gray-200 focus:bg-gray-400 focus:outline-none">
                   Details
                 </button>
               </Link>
             </div>
           </div>
-
-
-          ))}
+        ))}
       </div>
     </div>
   );
