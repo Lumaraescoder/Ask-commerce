@@ -22,6 +22,28 @@ describe('Navigation', () => {
       );
     });
 
+    it('should register the first name in the create account form', () => {
+      // Start from the index page
+      cy.visit('/');
+    
+      // Find a link containing "Create Account" text and click it
+      cy.findByRole('link', { name: 'Create Account' }).click();
+    
+      // The new url should include "/register"
+      cy.url().should('include', '/register');
+    
+      // Fill in the first name input field
+      const firstName = 'Hugo';
+      cy.findByLabelText('First Name').type(firstName);
+    
+      // Submit the form
+      cy.findByRole('button', { name: 'Submit' }).click();
+    
+      // Assert that the first name is registered
+      cy.get('.success-message').should('contain', `Welcome, ${firstName}!`);
+    });
+
+
     it('should take screenshot of the homepage', () => {
       cy.visit('/');
 
