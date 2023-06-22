@@ -76,7 +76,7 @@ const RegisterForm = () => {
       validationSchema={RegisterSchema}
     >
       {
-       <section className="bg-gray-50 dark:bg-gray-900">
+       <section className="bg-gray-50 ">
        <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto lg:py-0 registerAccount">
          <a
            href="#"
