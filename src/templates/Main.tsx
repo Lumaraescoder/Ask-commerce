@@ -12,11 +12,9 @@ const Main = (props: IMainProps) => (
 
     <div className="mx-auto max-w-screen-md">
       <header className="border-b border-gray-300">
+        
       </header>
-
       <main className="content py-5 text-xl">{props.children}</main>
-
- 
     </div>
   </div>
 );

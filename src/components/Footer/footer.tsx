@@ -1,21 +1,15 @@
 export const Footer =  () => {
   return (
-    <footer className="bg-white dark:bg-gray-900">
-      <div className="container p-6 mx-auto">
+    <footer className="bg-white dark:bg-gray-900 mt-5">
+      <div className="container p-6 mx-auto ">
         <div className="lg:flex">
           <div className="w-full -mx-6 lg:w-2/5">
             <div className="px-6">
               <a href="#">
-                <img
-                  className="w-auto h-7"
-                  src="https://merakiui.com/images/full-logo.svg"
-                  alt=""
-                />
               </a>
 
               <p className="max-w-sm mt-2 text-gray-500 dark:text-gray-400">
-                Join 31,000+ other and never miss out on new tips, tutorials,
-                and more.
+            
               </p>
 
               <div className="flex mt-6 -mx-2">
@@ -160,7 +154,7 @@ export const Footer =  () => {
 
         <div>
           <p className="text-center text-gray-500 dark:text-gray-400">
-            © Brand 2020 - All rights reserved
+        
           </p>
         </div>
       </div>
