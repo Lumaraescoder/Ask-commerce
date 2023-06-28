@@ -10,3 +10,17 @@ export interface Product {
     count: number;
   };
 }
+
+export interface Cart {
+  _id: string;
+  userId: string;
+  products: 
+    {
+    productId: string,
+    title: string,
+    quantity: number,
+    price: number,
+    _id: string
+  }[];
+  total: number;
+}
