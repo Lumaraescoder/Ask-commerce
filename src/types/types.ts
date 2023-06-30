@@ -1,3 +1,6 @@
+import { title } from "process";
+import { string, number } from "yup";
+
 export interface Product {
   id: number;
   title: string;
@@ -11,16 +14,17 @@ export interface Product {
   };
 }
 
+export interface CartProduct {
+  _id: string;
+  productId: string;
+  title: string;
+  quantity: number;
+  price: number;
+}
+
 export interface Cart {
   _id: string;
   userId: string;
-  products: 
-    {
-    productId: string,
-    title: string,
-    quantity: number,
-    price: number,
-    _id: string
-  }[];
+  products: CartProduct[];
   total: number;
 }

@@ -2,10 +2,36 @@ import { useCart } from "@/contexts/CartContext";
 import { GetServerSideProps, GetServerSidePropsContext } from "next";
 import { Cart } from "../../types/types";
 
+interface CartPageProps {
+  cart: Cart | null;
+}
+
+export const getServerSideProps: GetServerSideProps<CartPageProps> = async (context: GetServerSidePropsContext) => {
+  const { userId } = context.query; // Retrieve the user ID from the query parameters
+  //console.log("userId ->", userId);
+  
+  try {
+    const response = await fetch(`http://localhost:4000/cart/carts/user/${userId}`);
+    const data = await response.json();
+    //console.log("data ->", data);
+    return {
+      props: {
+        cart: data,
+      },
+    };
+  } catch (error) {
+    console.error('Error fetching cart:', error);
+    return {
+      props: {
+        cart: null,
+      },
+    };
+  }
+};
 
 const Cart: React.FC = () => {
   const { cart, addToCart, removeFromCart, clearCart } = useCart();
-
+console.log("cart ->", cart);
   if(!cart) {
     return <div>No cart found for the user.</div>
   }
@@ -16,7 +42,7 @@ const Cart: React.FC = () => {
           <div className="w-3/4 bg-white px-10 py-10">
             <div className="flex justify-between border-b pb-8">
               <h1 className="font-semibold text-2xl">Ask-Commerce Shopping Cart</h1>
-                <h2 className="font-semibold text-2xl">{cart.products.length} Items</h2>
+                <h2 className="font-semibold text-2xl">{cart.products?.length} Items</h2>
                 {cart.products.map((product) => (
                   <div key={product.productId}>
                   <div className="flex mt-10 mb-5">
@@ -69,29 +95,6 @@ const Cart: React.FC = () => {
   );
 };
 
-interface CartPageProps {
-  cart: Cart | null;
-}
 
-export const getServerSideProps: GetServerSideProps<CartPageProps> = async (context: GetServerSidePropsContext) => {
-  const { userId } = context.query; // Retrieve the user ID from the query parameters
-  
-  try {
-    const response = await fetch(`http://localhost:4000/cart/carts/user/${userId}`);
-    const data = await response.json();
-    return {
-      props: {
-        cart: data,
-      },
-    };
-  } catch (error) {
-    console.error('Error fetching cart:', error);
-    return {
-      props: {
-        cart: null,
-      },
-    };
-  }
-};
 
 export default Cart;
