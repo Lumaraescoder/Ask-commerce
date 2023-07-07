@@ -7,7 +7,7 @@ interface CartPageProps {
 }
 
 export const getServerSideProps: GetServerSideProps<CartPageProps> = async (context: GetServerSidePropsContext) => {
-  const { userId } = context.query; // Retrieve the user ID from the query parameters
+  const userId = context.req.cookies.userId; // Retrieve the user ID from the query parameters
   //console.log("userId ->", userId);
   
   try {

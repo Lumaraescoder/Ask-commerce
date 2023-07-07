@@ -15,12 +15,24 @@ interface CartContextData {
 // Crie o contexto do carrinho
 const CartContext = createContext<CartContextData | undefined>(undefined);
 
+// Função utilitária para obter o valor do cookie pelo nome
+const getCookie = (name: string) => {
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; ${name}=`);
+  if (parts.length === 2) {
+    return parts.pop()?.split(";").shift();
+  }
+  return null;
+};
+
 // Função utilitária para buscar os dados do carrinho
 const fetchCartData = async (url: string) => {
-  const res = await fetch(url);
+  const userId = getCookie("userId");
+  const res = await fetch(`${url}/${userId}`);
   const data = await res.json();
   return data;
 };
+
 
 // Componente de provedor do contexto do carrinho
 export const CartProvider: React.FC<React.PropsWithChildren<{}>> = ({ children }) => {
@@ -29,8 +41,9 @@ export const CartProvider: React.FC<React.PropsWithChildren<{}>> = ({ children }
   const [error, setError] = useState<any>(null);
   console.log(cart)
   useEffect(() => {
-    const fetchData = async (userId: any) => {
+    const fetchData = async () => {
       try {
+        const userId = getCookie("userId");
         // const userId = cart?.userId; // Replace with the actual user ID
         const url = `http://localhost:4000/cart/carts/user/${userId}`;
         const data = await fetchCartData(url);
@@ -43,7 +56,7 @@ export const CartProvider: React.FC<React.PropsWithChildren<{}>> = ({ children }
       }
     };
 
-    fetchData("");
+    fetchData();
   }, []);
 
   // Função para adicionar um produto ao carrinho
