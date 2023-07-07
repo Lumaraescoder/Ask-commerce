@@ -1,6 +1,5 @@
 import { Cart, Product } from "@/types/types";
 import React, { createContext, useContext, useEffect, useState } from "react";
-import useCartData from "@/utils/useCartData";
 
 
 interface CartContextData {
@@ -30,6 +29,9 @@ const fetchCartData = async (url: string) => {
   const userId = getCookie("userId");
   const res = await fetch(`${url}/${userId}`);
   const data = await res.json();
+  console.log("res ->", res.url);
+  console.log("data on fetchCartData ->", data);
+  console.log("---------------------------------------------------------------------------")
   return data;
 };
 
@@ -43,10 +45,13 @@ export const CartProvider: React.FC<React.PropsWithChildren<{}>> = ({ children }
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const userId = getCookie("userId");
+        //const userId = getCookie("userId");
         const url = `http://localhost:3333/cart/carts/user`;
         const data = await fetchCartData(url);
-        
+        console.log("data ->", data);
+        console.log("userId", data.userId)
+        console.log("url->", url);
+        console.log("data ->", data);
         if (!data) {
           setCart(null);
         } else {
@@ -142,7 +147,7 @@ export const CartProvider: React.FC<React.PropsWithChildren<{}>> = ({ children }
 // Hook personalizado para acessar o contexto do carrinho
 export const useCart = (): CartContextData => {
   const context = useContext(CartContext);
-  //console.log("context", context);
+  console.log("context", context);
 
   if (!context) {
     throw new Error('useCart must be used within a CartProvider');
