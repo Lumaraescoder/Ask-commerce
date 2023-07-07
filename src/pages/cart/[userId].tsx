@@ -11,7 +11,7 @@ export const getServerSideProps: GetServerSideProps<CartPageProps> = async (cont
   //console.log("userId ->", userId);
   
   try {
-    const response = await fetch(`http://localhost:4000/cart/carts/user/${userId}`);
+    const response = await fetch(`http://localhost:3333/cart/carts/user/${userId}`);
     const data = await response.json();
     //console.log("data ->", data);
     return {

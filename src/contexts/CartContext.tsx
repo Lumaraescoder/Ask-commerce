@@ -46,10 +46,14 @@ export const CartProvider: React.FC<React.PropsWithChildren<{}>> = ({ children }
         const userId = getCookie("userId");
         // const userId = cart?.userId; // Replace with the actual user ID
         //const url = `http://localhost:4000/cart/carts/user/${userId}`;
-        const url = `http://localhost:4000/cart/carts/user`;
+        const url = `http://localhost:3333/cart/carts/user`;
         const data = await fetchCartData(url);
         //console.log("data l 36->", data)
+        if (!data) {
+          setCart(null);
+        } else {
         setCart(data);
+        }
       } catch (error) {
         setError(error);
       } finally {
