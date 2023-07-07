@@ -39,20 +39,18 @@ export const CartProvider: React.FC<React.PropsWithChildren<{}>> = ({ children }
   const [cart, setCart] = useState<Cart | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<any>(null);
-  console.log(cart)
+
   useEffect(() => {
     const fetchData = async () => {
       try {
         const userId = getCookie("userId");
-        // const userId = cart?.userId; // Replace with the actual user ID
-        //const url = `http://localhost:4000/cart/carts/user/${userId}`;
         const url = `http://localhost:3333/cart/carts/user`;
         const data = await fetchCartData(url);
-        //console.log("data l 36->", data)
+        
         if (!data) {
           setCart(null);
         } else {
-        setCart(data);
+          setCart(data);
         }
       } catch (error) {
         setError(error);
@@ -61,7 +59,7 @@ export const CartProvider: React.FC<React.PropsWithChildren<{}>> = ({ children }
       }
     };
 
-    fetchData();
+    fetchData(); // Adiciona essa chamada para buscar os dados do carrinho
   }, []);
 
   // Função para adicionar um produto ao carrinho
