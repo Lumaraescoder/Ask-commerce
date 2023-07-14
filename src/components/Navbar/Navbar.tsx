@@ -3,6 +3,8 @@ import React from "react";
 
 
 export const Navbar = () => {
+//obtém o userId do cookie para utilizar no link para aceder ao carrinho do $userId específico e dinâmico
+  const userId = document.cookie.replace(/(?:(?:^|.*;\s*)userId\s*=\s*([^;]*).*$)|^.*$/, "$1");
 
   return (
     <div>
@@ -73,6 +75,12 @@ export const Navbar = () => {
                   >
                     Register
                   </a>
+                  <a
+                  href={`/cart/${userId}`}
+                  className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+                >
+                  Cart
+                </a>
                   {/* Add more links as needed */}
                 </div>
             </div>
