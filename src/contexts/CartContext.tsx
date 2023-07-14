@@ -80,11 +80,11 @@ export const CartProvider: React.FC<React.PropsWithChildren<{}>> = ({ children }
           existingProduct.price += product.price;
         } else {
           prevCart.products.push({
-            productId: product._id.toString(),
+            productId: product.productId.toString(),
             title: product.title,
             quantity: 1,
             price: product.price,
-            _id: `${cart?._id}`,
+            _id: `${product?._id}`,
           });
         }
         prevCart.total += product.price;
@@ -95,11 +95,11 @@ export const CartProvider: React.FC<React.PropsWithChildren<{}>> = ({ children }
           userId: `${cart?.userId}`,
           products: [
             {
-              productId: product._id.toString(),
+              productId: product.productId.toString(),
               title: product.title,
               quantity: 1,
               price: product.price,
-              _id: `${cart?._id}`,
+              _id: `${product?._id}`,
             },
           ],
           total: product.price,

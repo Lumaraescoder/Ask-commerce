@@ -70,6 +70,45 @@ const CartPage: React.FC<CartPageProps> = ({ cart }) => {
     }
   };
 
+  const handleIncreaseQuantity = async (productId?: string) => {
+    if (!productId) {
+      return;
+    }
+  
+    try {
+      const userId = document.cookie
+        .split('; ')
+        .find((row) => row.startsWith('userId='))
+        ?.split('=')[1];
+  
+      if (!userId) {
+        // Caso o userId não seja encontrado nos cookies
+        console.error('UserId not found in cookies');
+        return;
+      }
+  
+      await fetch(`http://localhost:3333/cart/addCart/${userId}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          userId,
+          products: [
+            {
+              productId,
+              quantity: 1,
+            },
+          ],
+        }),
+      });
+  
+      router.reload(); // Atualiza a página
+    } catch (error) {
+      console.error('Error increasing product quantity in cart:', error);
+    }
+  };
+
   return (
     <div>
       <div className="container mx-auto mt-10">
@@ -119,11 +158,11 @@ const CartPage: React.FC<CartPageProps> = ({ cart }) => {
                       disabled
                     />
                     <button
-                        //onClick={() => handleRemoveFromCart(product.productId.toString())}
-                        className="font-semibold text-left uppercase hover:text-red-500 text-gray-500 text-xs"
+                      onClick={() => handleIncreaseQuantity(product?.productId?.toString())}
+                      className="font-semibold text-left uppercase hover:text-red-500 text-gray-500 text-xs"
                       >
-                        +
-                      </button>
+                      +
+                    </button>
                   </div>
                   <span className="text-center w-1/5 font-semibold text-sm">
                     ${product?.price}
