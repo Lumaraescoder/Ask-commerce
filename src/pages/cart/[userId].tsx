@@ -1,7 +1,9 @@
-import { useCart } from "@/contexts/CartContext";
+import { useCart, fetchCartData } from "@/contexts/CartContext";
 import { GetServerSideProps, GetServerSidePropsContext } from "next";
 import { Cart } from "../../types/types";
 import { ParsedUrlQuery } from "querystring";
+import { useEffect } from "react";
+import router, { useRouter } from "next/router";
 
 interface CartPageProps {
   cart: Cart | null;
@@ -37,11 +39,36 @@ export const getServerSideProps: GetServerSideProps<CartPageProps, CartPageParam
 };
 
 const CartPage: React.FC<CartPageProps> = ({ cart }) => {
-  const { addToCart, removeFromCart, clearCart } = useCart();
-  
+  const { addToCart, removeFromCart, clearCart, cart: currentCart, setCart } = useCart();
+  const router = useRouter();
+
   if (!cart) {
     return <div>No cart found for the user.</div>;
   }
+
+  useEffect(() => {
+    // Atualiza o carrinho após a remoção de um produto
+    if (cart) {
+      const { productId } = router.query; // Extrai o productId da URL
+      const removedProduct = cart.products.find((product) => product?.productId === productId);
+      if (removedProduct) {
+        addToCart(removedProduct);
+      }
+    }
+  }, [cart, router.query]);
+
+  const handleRemoveFromCart = async (productId?: string) => {
+    if (!productId) {
+      return;
+    }
+  
+    try {
+      await removeFromCart(productId);
+      router.reload(); // Atualiza a página
+    } catch (error) {
+      console.error('Error removing product from cart:', error);
+    }
+  };
 
   return (
     <div>
@@ -53,7 +80,7 @@ const CartPage: React.FC<CartPageProps> = ({ cart }) => {
               <h2 className="font-semibold text-2xl">{cart.products.length} Items</h2>
             </div>
             {cart.products.map((product) => (
-              <div key={product.productId}>
+              <div key={product?.productId}>
                 <div className="flex mt-10 mb-5">
                   <h3 className="font-semibold text-gray-600 text-xs uppercase w-2/5">
                     Product name
@@ -75,30 +102,36 @@ const CartPage: React.FC<CartPageProps> = ({ cart }) => {
                       />
                     </div>
                     <div className="flex flex-col justify-between ml-4 flex-grow">
-                      <span className="font-bold text-sm">{product.title}</span>
-                      <button
-                        onClick={() => removeFromCart(product.productId)}
-                        className="font-semibold text-left uppercase hover:text-red-500 text-gray-500 text-xs"
-                      >
-                        Remove
-                      </button>
+                      <span className="font-bold text-sm">{product?.title}</span>
                     </div>
                   </div>
                   <div className="flex justify-center w-1/5">
+                  <button
+                        onClick={() => handleRemoveFromCart(product?.productId?.toString())}
+                        className="font-semibold text-left uppercase hover:text-red-500 text-gray-500 text-xs"
+                      >
+                        -
+                      </button>
                     <input
                       className="mx-2 border text-center w-8"
                       type="text"
-                      value={product.quantity}
+                      value={product?.quantity}
                       disabled
                     />
+                    <button
+                        //onClick={() => handleRemoveFromCart(product.productId.toString())}
+                        className="font-semibold text-left uppercase hover:text-red-500 text-gray-500 text-xs"
+                      >
+                        +
+                      </button>
                   </div>
                   <span className="text-center w-1/5 font-semibold text-sm">
-                    ${product.price}
+                    ${product?.price}
                   </span>
                 </div>
-                <div>Total: ${cart.total}</div>
               </div>
             ))}
+            <div>Total: ${cart.total}</div>
             <button
                         onClick={clearCart}
                         className="font-semibold text-left uppercase hover:text-red-500 text-gray-500 text-xs"

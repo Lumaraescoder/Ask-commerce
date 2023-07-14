@@ -8,6 +8,7 @@ interface CartContextData {
   addToCart: (product: CartProduct) => void;
   removeFromCart: (productId: string) => void;
   clearCart: () => void;
+  setCart: React.Dispatch<React.SetStateAction<Cart | null>>; //conseguir utilizar setCart na page para atualizar total e quantidades quando um produto é removido
 }
 
 const CartContext = createContext<CartContextData | undefined>(undefined);
@@ -21,8 +22,12 @@ const getCookie = (name: string) => {
   return null;
 };
 
-const fetchCartData = async (url: string, userId: string) => {
-  const res = await fetch(`${url}/${userId}`);
+export const fetchCartData = async (url: string, userId: string) => {
+  const res = await fetch(`${url}/${userId}`, {
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
   const data = await res.json();
   console.log("userId from the cookie ->", userId);
   console.log("---------------------------------------------------------------------------")
@@ -69,7 +74,7 @@ export const CartProvider: React.FC<React.PropsWithChildren<{}>> = ({ children }
   const addToCart = (product: CartProduct) => {
     setCart((prevCart) => {
       if (prevCart) {
-        const existingProduct = prevCart.products.find((p) => p.productId === product._id.toString());
+        const existingProduct = prevCart.products.find((p) => p?.productId === product._id.toString());
         if (existingProduct) {
           existingProduct.quantity += 1;
           existingProduct.price += product.price;
@@ -104,23 +109,55 @@ export const CartProvider: React.FC<React.PropsWithChildren<{}>> = ({ children }
     });
   };
 
-  const removeFromCart = (productId: string) => {
-    setCart((prevCart) => {
-      if (prevCart) {
-        const updatedProducts = prevCart.products.filter((p) => p.productId !== productId);
-        const updatedTotal = updatedProducts.reduce((total, p) => total + p.price * p.quantity, 0);
-
-        return {
-          ...prevCart,
-          products: updatedProducts,
-          total: updatedTotal,
-        };
-      } else {
-        return null;
+  const removeFromCart = async (productId: string) => {
+    try {
+      await fetch(`http://localhost:3333/cart/carts/${cart?.userId}/${productId}`, {
+        method: 'DELETE',
+      });
+  
+      // Atualiza o carrinho localmente após a remoção do produto
+      setCart((prevCart) => {
+        if (prevCart) {
+          const updatedProducts: (CartProduct | null)[] = prevCart.products.map((p) => {
+            if (p?.productId === productId) {
+              if (p.quantity > 1) {
+                // Se a quantidade for maior que 1, apenas diminui a quantidade
+                return {
+                  ...p,
+                  quantity: p.quantity - 1,
+                };
+              } else {
+                // Se a quantidade for igual a 1, remove completamente o produto do carrinho
+                return null;
+              }
+            } else {
+              return p;
+            }
+          }).filter(Boolean); // Remove os produtos nulos
+          
+          const updatedTotal = updatedProducts.reduce((total, p) => total + ((p && p.price) || 0) * (p?.quantity || 0), 0);
+          
+          const updatedCart: Cart = {
+            ...prevCart,
+            products: updatedProducts,
+            total: updatedTotal,
+          };
+  
+          return updatedCart;
+        } else {
+          return null;
+        }
+      });
+  
+      // Atualiza o carrinho no servidor
+      if (cart?.userId) {
+        await fetchCartData(`http://localhost:3333/cart/carts/user`, cart?.userId);
       }
-    });
+    } catch (error) {
+      console.error('Error removing product from cart:', error);
+    }
   };
-
+  
   const clearCart = () => {
     setCart(null);
   };
@@ -134,7 +171,7 @@ export const CartProvider: React.FC<React.PropsWithChildren<{}>> = ({ children }
   }
 
   return (
-    <CartContext.Provider value={{ cart, isLoading, error, addToCart, removeFromCart, clearCart }}>
+    <CartContext.Provider value={{ cart, isLoading, error, addToCart, removeFromCart, clearCart, setCart }}>
       {children}
     </CartContext.Provider>
   );

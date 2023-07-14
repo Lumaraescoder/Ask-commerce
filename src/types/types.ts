@@ -25,6 +25,6 @@ export interface CartProduct {
 export interface Cart {
   _id: string;
   userId: string;
-  products: CartProduct[];
+  products: (CartProduct | null)[];
   total: number;
 }
