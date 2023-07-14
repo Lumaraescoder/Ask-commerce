@@ -109,6 +109,16 @@ const CartPage: React.FC<CartPageProps> = ({ cart }) => {
     }
   };
 
+  const handleClearCart = async () => {
+    try {
+      await clearCart();
+      setCart(null); // Define o carrinho como null localmente
+      router.reload(); // Atualiza a página
+    } catch (error) {
+      console.error('Error clearing cart:', error);
+    }
+  };
+
   return (
     <div>
       <div className="container mx-auto mt-10">
@@ -171,12 +181,9 @@ const CartPage: React.FC<CartPageProps> = ({ cart }) => {
               </div>
             ))}
             <div>Total: ${cart.total}</div>
-            <button
-                        onClick={clearCart}
-                        className="font-semibold text-left uppercase hover:text-red-500 text-gray-500 text-xs"
-                      >
-                        Clear Cart
-                      </button>
+            <button onClick={handleClearCart} className="font-semibold text-left uppercase hover:text-red-500 text-gray-500 text-xs">
+              Clear Cart
+            </button>
           </div>
         </div>
       </div>

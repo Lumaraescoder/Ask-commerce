@@ -158,8 +158,19 @@ export const CartProvider: React.FC<React.PropsWithChildren<{}>> = ({ children }
     }
   };
   
-  const clearCart = () => {
-    setCart(null);
+  const clearCart = async () => {
+    try {
+      const userId = getCookie("userId");
+      if (userId) {
+        await fetch(`http://localhost:3333/cart/deleteCart/${userId}`, {
+          method: 'DELETE',
+        });
+      }
+      setCart(null);
+    } catch (error) {
+      console.error('Error clearing cart:', error);
+      throw error;
+    }
   };
 
   if (isLoading) {
