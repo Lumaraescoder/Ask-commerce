@@ -42,9 +42,9 @@ const CartPage: React.FC<CartPageProps> = ({ cart }) => {
   const { addToCart, removeFromCart, clearCart, cart: currentCart, setCart } = useCart();
   const router = useRouter();
 
-  if (!cart) {
-    return <div>No cart found for the user.</div>;
-  }
+  // if (!cart) {
+  //   return <div>No cart found for the user.</div>;
+  // }
 
   useEffect(() => {
     // Atualiza o carrinho após a remoção de um produto
@@ -126,9 +126,9 @@ const CartPage: React.FC<CartPageProps> = ({ cart }) => {
           <div className="w-3/4 bg-white px-10 py-10">
             <div className="flex justify-between border-b pb-8">
               <h1 className="font-semibold text-2xl">Ask-Commerce Shopping Cart</h1>
-              <h2 className="font-semibold text-2xl">{cart.products.length} Items</h2>
+              <h2 className="font-semibold text-2xl">{cart?.products.length} Items</h2>
             </div>
-            {cart.products.map((product) => (
+            {cart?.products.map((product) => (
               <div key={product?.productId}>
                 <div className="flex mt-10 mb-5">
                   <h3 className="font-semibold text-gray-600 text-xs uppercase w-2/5">
@@ -180,7 +180,7 @@ const CartPage: React.FC<CartPageProps> = ({ cart }) => {
                 </div>
               </div>
             ))}
-            <div>Total: ${cart.total}</div>
+            <div>Total: ${cart?.total}</div>
             <button onClick={handleClearCart} className="font-semibold text-left uppercase hover:text-red-500 text-gray-500 text-xs">
               Clear Cart
             </button>
