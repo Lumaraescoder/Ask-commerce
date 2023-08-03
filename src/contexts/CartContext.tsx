@@ -28,7 +28,13 @@ export const fetchCartData = async (url: string, userId: string) => {
       'Content-Type': 'application/json',
     },
   });
+  if(!res.ok){
+    console.error('Erro na resposta', res.status);
+    return null;
+  }
+  
   const data = await res.json();
+
   console.log("userId from the cookie ->", userId);
   console.log("---------------------------------------------------------------------------")
   console.log("res ->", res.url);
@@ -43,6 +49,8 @@ export const CartProvider: React.FC<React.PropsWithChildren<{}>> = ({ children }
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<any>(null);
 
+
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -50,10 +58,6 @@ export const CartProvider: React.FC<React.PropsWithChildren<{}>> = ({ children }
         if (userId) {
           const url = `http://localhost:3333/cart/carts/user`;
           const data = await fetchCartData(url, userId);
-          console.log("data ->", data);
-          console.log("userId", data.userId)
-          console.log("url->", url);
-          console.log("data ->", data);
           if (!data) {
             setCart(null);
           } else {
