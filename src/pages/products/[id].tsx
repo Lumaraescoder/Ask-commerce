@@ -2,12 +2,14 @@ import { Meta } from "@/layouts/Meta";
 import { Main } from "@/templates/Main";
 
 export async function getStaticPaths() {
-  const res = await fetch("https://fakestoreapi.com/products");
+  //const res = await fetch("https://fakestoreapi.com/products");
+  const res = await fetch("http://localhost:3333/products/");
   const data = await res.json();
 
   const paths = data.map((product: any) => {
+    console.log("data", data);
     return {
-      params: { id: product.id.toString() },
+      params: { id: product._id },
     };
   });
 
@@ -18,8 +20,11 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps(context: any) {
+  console.log("context --------->", context);
   const id = context.params.id;
-  const res = await fetch("https://fakestoreapi.com/products/" + id);
+  console.log("id --------------->", id);
+  //const res = await fetch("https://fakestoreapi.com/products/" + id);
+  const res = await fetch(`http://localhost:3333/products/${id}`);
   const data = await res.json();
 
   return {
@@ -27,7 +32,11 @@ export async function getStaticProps(context: any) {
   };
 }
 
-const renderRating = (rating: number) => {
+const renderRating = (rating: { rate?: number }) => {
+  if (!rating || typeof rating.rate !== 'number' || isNaN(rating.rate)) {
+    return <p>No rating available</p>; // Display a message if rating is not available
+  }
+
   const starUrl = "https://www.svgrepo.com/show/444861/star.svg";
   const emptyStarUrl = "https://www.svgrepo.com/show/513120/star.svg";
   const stars = [];
@@ -37,7 +46,7 @@ const renderRating = (rating: number) => {
       <img
         key={i}
         width="20px"
-        src={i <= rating ? starUrl : emptyStarUrl}
+        src={i <= rating.rate ? starUrl : emptyStarUrl}
         alt={`star ${i}`}
         className="mr-1"
       />
@@ -68,9 +77,11 @@ const getSingleProduct = ({ product } : {product: any}) => {
                   <p className="text-base font-medium">{product.category}</p>
                   <p className="text-lg font-bold">{product.price}€</p>
                   <div className="flex items-center">
-                    {renderRating(product.rating.rate)}
+                    {renderRating(product.rating)}
                     <p className="ml-2 text-sm font-medium text-gray-500 dark:text-gray-400">
-                      {product.rating.rate} out of 5
+                      {product.rating && product.rating.count
+                        ? `${product.rating.count} reviews`
+                        : "No reviews available"}
                     </p>
                     <div className="flex ml-5">
                       <img

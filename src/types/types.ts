@@ -2,7 +2,7 @@ import { title } from "process";
 import { string, number } from "yup";
 
 export interface Product {
-  id: number;
+  _id: string;
   title: string;
   price: number;
   description: string;
