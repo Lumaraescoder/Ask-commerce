@@ -9,7 +9,10 @@ interface Products {
   price: number;
   description: string;
   category: string;
-  image: string;
+  image: {
+    data: string;
+    contentType: string;
+};
 }
 
 const getAllProducts = (url: string) =>
@@ -22,9 +25,13 @@ const Products: React.FC = () => {
     getAllProducts
   );
 
+  console.log("Received data:", data);
+
   const { productData } = useContext(ProductContext);
 
   const filteredProducts = productData.length === 0 ? data : productData;
+
+  console.log("Filtered products:", filteredProducts);
 
   if (error) {
     return <p>Error</p>;
@@ -53,7 +60,7 @@ const Products: React.FC = () => {
 
             <img
               className="object-cover w-full h-48 mt-2"
-              src={product.image}
+              src={`data:${product.image.contentType};base64,${product.image.data}`}
               alt={product.title}
             />
 
