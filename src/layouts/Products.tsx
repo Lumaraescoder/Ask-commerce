@@ -12,7 +12,11 @@ interface Products {
   image: {
     data: string;
     contentType: string;
-};
+  };
+  rating: {
+    rate: number;
+    count: number;
+  };
 }
 
 const getAllProducts = (url: string) =>
