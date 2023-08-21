@@ -4,12 +4,19 @@ import Link from "next/link";
 import { ProductContext } from "@/contexts/ProductContext";
 
 interface Products {
-  id: number;
+  _id: string;
   title: string;
   price: number;
   description: string;
   category: string;
-  image: string;
+  image: {
+    data: string;
+    contentType: string;
+  };
+  rating: {
+    rate: number;
+    count: number;
+  };
 }
 
 const getAllProducts = (url: string) =>
@@ -17,13 +24,18 @@ const getAllProducts = (url: string) =>
 
 const Products: React.FC = () => {
   const { data, error, isLoading } = useSWR(
-    "https://fakestoreapi.com/products",
+    //"https://fakestoreapi.com/products",
+    "http://localhost:3333/products",
     getAllProducts
   );
+
+  console.log("Received data:", data);
 
   const { productData } = useContext(ProductContext);
 
   const filteredProducts = productData.length === 0 ? data : productData;
+
+  console.log("Filtered products:", filteredProducts);
 
   if (error) {
     return <p>Error</p>;
@@ -42,7 +54,7 @@ const Products: React.FC = () => {
         {filteredProducts.map((product: Products) => (
           <div
             className="max-w-xs overflow-hidden bg-white rounded-lg shadow-lg dark:bg-gray-800"
-            key={product.id}
+            key={product._id}
           >
             <div className="min-h-[6rem] px-4 py-2">
               <h1 className="text-l font-bold text-gray-800 uppercase dark:text-white">
@@ -52,7 +64,7 @@ const Products: React.FC = () => {
 
             <img
               className="object-cover w-full h-48 mt-2"
-              src={product.image}
+              src={`data:${product.image.contentType};base64,${product.image.data}`}
               alt={product.title}
             />
 
@@ -60,7 +72,7 @@ const Products: React.FC = () => {
               <h1 className="text-lg font-bold text-white">
                 {product.price}€
               </h1>
-              <Link href={`/products/${product.id}`}>
+              <Link href={`/products/${product._id}`}>
                 <button className="px-2 py-1 text-xs font-semibold text-gray-900 uppercase transition-colors no-underline duration-300 bg-white rounded hover:bg-gray-200 focus:bg-gray-400 focus:outline-none">
                   Details
                 </button>
