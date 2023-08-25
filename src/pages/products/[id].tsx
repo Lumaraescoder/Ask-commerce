@@ -1,5 +1,6 @@
 import { Meta } from "@/layouts/Meta";
 import { Main } from "@/templates/Main";
+import { getRandomImage } from "../../layouts/Products";
 
 export async function getStaticPaths() {
   //const res = await fetch("https://fakestoreapi.com/products");
@@ -26,6 +27,8 @@ export async function getStaticProps(context: any) {
   //const res = await fetch("https://fakestoreapi.com/products/" + id);
   const res = await fetch(`http://localhost:3333/products/${id}`);
   const data = await res.json();
+
+  data.randomImage = getRandomImage(data.category);
 
   return {
     props: { product: data },
@@ -63,8 +66,8 @@ const getSingleProduct = ({ product } : {product: any}) => {
           <div className="grid grid-cols-1 items-center gap-8 md:grid-cols-2">
             <div className="gap-4 md:grid-cols-1">
               <img
-                alt="Les Paul"
-                src={product.image}
+                alt={product.title}
+                src={`../../images/${product.randomImage}`}
                 className="aspect-square w-full rounded-xl object-contain"
               />
             </div>
