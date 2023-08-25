@@ -36,7 +36,7 @@ export async function getStaticProps(context: any) {
 }
 
 const renderRating = (rating: { rate?: number }) => {
-  if (!rating || typeof rating.rate !== 'number' || isNaN(rating.rate)) {
+  if (!rating || typeof rating.rate !== "number" || isNaN(rating.rate)) {
     return <p>No rating available</p>; // Display a message if rating is not available
   }
 
@@ -58,7 +58,34 @@ const renderRating = (rating: { rate?: number }) => {
   return <div className="flex">{stars}</div>;
 };
 
-const getSingleProduct = ({ product } : {product: any}) => {
+const getSingleProduct = ({ product }: { product: any }) => {
+  const addToCart = async (product: any) => {
+    const userId = localStorage.getItem("userId");
+
+    try {
+      await fetch(`http://localhost:3333/cart/addCart/${userId}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          userId,
+          products: [
+            {
+              productId: product._id,
+              title: product.title,
+              quantity: 1,
+              price: product.price,
+            },
+          ],
+        }),
+      });
+      alert('Added successfully to cart');
+    } catch (error) {
+      console.error("Error adding product in cart:", error);
+    }
+  };
+
   return (
     <Main meta={<Meta title="Lorem ipsum" description="Lorem ipsum" />}>
       <section className="border">
@@ -105,6 +132,12 @@ const getSingleProduct = ({ product } : {product: any}) => {
                   <p>{product.description}</p>
                 </div>
               </div>
+              <button
+                onClick={() => addToCart(product)}
+                className="px-2 py-1 text-xs font-semibold text-gray-900 uppercase transition-colors no-underline duration-300 bg-white rounded hover:bg-gray-200 focus:bg-gray-400 focus:outline-none"
+              >
+                Add to cart
+              </button>
             </div>
           </div>
         </div>
