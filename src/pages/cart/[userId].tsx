@@ -2,15 +2,20 @@ import { useCart } from "@/contexts/CartContext";
 import { GetServerSideProps, GetServerSidePropsContext } from "next";
 import { Cart } from "../../types/types";
 import { ParsedUrlQuery } from "querystring";
-import { useEffect } from "react";
+import React, { useEffect} from "react";
 import { useRouter } from "next/router";
+import {
+  useStripe,
+  useElements,
+  CardElement,
+  Elements,
+} from "@stripe/react-stripe-js";
+import { loadStripe } from "@stripe/stripe-js";
+import styled from "styled-components";
 
-import { loadStripe } from '@stripe/stripe-js';
-import { Elements } from '@stripe/react-stripe-js';
-import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
-import { useState } from 'react';
-
-const stripePromise = loadStripe('pk_test_51NgTVbIl0xV6vIx6topedtQlEg7RMmgGJktv58NX59wP6UEZDn5ef2Yicqhd7hk4tCgFOQ7mHFvnvw38mvu9R9aN00cohwyg7J');
+const stripePromise = loadStripe(
+  "pk_test_51NgTVbIl0xV6vIx6topedtQlEg7RMmgGJktv58NX59wP6UEZDn5ef2Yicqhd7hk4tCgFOQ7mHFvnvw38mvu9R9aN00cohwyg7J"
+);
 
 interface CartPageProps {
   cart: Cart | null;
@@ -20,14 +25,17 @@ interface CartPageParams extends ParsedUrlQuery {
   userId: string;
 }
 
-export const getServerSideProps: GetServerSideProps<CartPageProps, CartPageParams> = async (
-  context: GetServerSidePropsContext<CartPageParams>
-) => {
+export const getServerSideProps: GetServerSideProps<
+  CartPageProps,
+  CartPageParams
+> = async (context: GetServerSidePropsContext<CartPageParams>) => {
   const { userId } = context.params || {}; // Verifica se context.params é nulo e atribui um objeto vazio em caso afirmativo
   console.log("userId on [userId].tsx ->", userId);
-  
+
   try {
-    const response = await fetch(`http://localhost:3333/cart/carts/user/${userId}`);
+    const response = await fetch(
+      `http://localhost:3333/cart/carts/user/${userId}`
+    );
     const data = await response.json();
 
     return {
@@ -36,7 +44,7 @@ export const getServerSideProps: GetServerSideProps<CartPageProps, CartPageParam
       },
     };
   } catch (error) {
-    console.error('Error fetching cart:', error);
+    console.error("Error fetching cart:", error);
     return {
       props: {
         cart: null,
@@ -45,82 +53,75 @@ export const getServerSideProps: GetServerSideProps<CartPageProps, CartPageParam
   }
 };
 
-const fetchClientServerFromServer = async () => {
+const Payment: React.FC<CartPageProps> = ({cart}) => {
 
-  try{
-    const response = await fetch('http://localhost:3333/cart/payment');
+  const stripe = useStripe();
+  const elements = useElements();
 
-    if(!response.ok){
-      throw new Error('Failde to fetch clientSecret');
+  const handlePayment = async () => {
+    
+    if (!elements || !stripe) {
+      return;
     }
-    const data = await response.json();
-    return data
-  } catch (error){
+    const cardElement = elements.getElement(CardElement);
+    
+    if (!cardElement) {
+      console.error("Card element not found");
+      return;
+    }
+    
+    const { paymentMethod, error } = await stripe.createPaymentMethod({
+      type: "card",
+      card: cardElement, // Explicitly cast to any due to type incompatibility
+    });
 
-    console.error('Error fetching clientSecret:', error);
-    throw error;
-  }
+    if (error) {
+      console.error("Payment method creation failed:", error);
+    } else if (paymentMethod) {
+      const response = await fetch("http://localhost:3333/cart/payment", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          paymentMethodId: paymentMethod.id,
+          amount: cart?.total,
+        }),
+      });
+
+      const responseData = await response.json();
+      alert('Payment successful');
+      console.log("Payment result:", responseData);
+    }
+  };
+
+
+  return (
+    <div>
+      <CardElement />
+        <button style={{ marginTop: "20px" }} className="margin-top: 220px px-2 py-1 text-xs font-semibold text-gray-900 uppercase transition-colors no-underline duration-300 bg-white rounded hover:bg-gray-200 focus:bg-gray-400 focus:outline-none" onClick={handlePayment}>Submit Payment</button>
+    </div>
+  );
 }
 
 const CartPage: React.FC<CartPageProps> = ({ cart }) => {
-  const { addToCart, removeFromCart, clearCart, cart: currentCart, setCart } = useCart();
+  const {
+    addToCart,
+    removeFromCart,
+    clearCart,
+    setCart,
+  } = useCart();
   const router = useRouter();
-
-
-  const [error, setError] = useState('');
-  const [clientSecret, setClientSecret] = useState('');
-  const stripe = useStripe();
-  const elements = useElements(); 
-  const cardElement = elements!.getElement(CardElement);
-
-  useEffect (() => {
-    fetchClientServerFromServer()
-    .then(response => {
-      setClientSecret(response.clientSecret)
-    })
-    .catch(error => {
-      console.error('Error fetching clientSecret:', error);
-    })
-
-  })
-
-
-  const handlePayment = async () => {
-
-    if (!stripe || !elements) {
-      return;
-    }
-
-    if(cardElement){
-      try {
-        const { paymentIntent, error } = await stripe.confirmCardPayment(clientSecret, {
-          payment_method: {
-            card: cardElement,
-          },
-        });
-  
-        if (error) {
-          console.error('Payment error:', error);
-          setError(error.message ?? 'An error occurred while processing your payment');
-        } else if (paymentIntent) {
-          console.log('Payment succeeded:', paymentIntent);
-        }
-      } catch (error) {
-        console.error('Payment error:', error);
-        setError('An error occurred while processing your payment');
-      }
-    } else{
-      console.error('Card element not found');
-    }
-    
-  }
+ 
 
 
   useEffect(() => {
     // Atualiza o carrinho após a remoção de um produto
     if (cart) {
       const { productId } = router.query; // Extrai o productId da URL
-      const removedProduct = cart.products.find((product) => product?.productId === productId);
+      const removedProduct = cart.products.find(
+        (product) => product?.productId === productId
+      );
       if (removedProduct) {
         addToCart(removedProduct);
       }
@@ -131,12 +132,12 @@ const CartPage: React.FC<CartPageProps> = ({ cart }) => {
     if (!productId) {
       return;
     }
-  
+
     try {
       await removeFromCart(productId);
       router.reload(); // Atualiza a página
     } catch (error) {
-      console.error('Error removing product from cart:', error);
+      console.error("Error removing product from cart:", error);
     }
   };
 
@@ -144,23 +145,23 @@ const CartPage: React.FC<CartPageProps> = ({ cart }) => {
     if (!productId) {
       return;
     }
-  
+
     try {
       const userId = document.cookie
-        .split('; ')
-        .find((row) => row.startsWith('userId='))
-        ?.split('=')[1];
-  
+        .split("; ")
+        .find((row) => row.startsWith("userId="))
+        ?.split("=")[1];
+
       if (!userId) {
         // Caso o userId não seja encontrado nos cookies
-        console.error('UserId not found in cookies');
+        console.error("UserId not found in cookies");
         return;
       }
-  
+
       await fetch(`http://localhost:3333/cart/addCart/${userId}`, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           userId,
@@ -172,10 +173,10 @@ const CartPage: React.FC<CartPageProps> = ({ cart }) => {
           ],
         }),
       });
-  
+
       router.reload(); // Atualiza a página
     } catch (error) {
-      console.error('Error increasing product quantity in cart:', error);
+      console.error("Error increasing product quantity in cart:", error);
     }
   };
 
@@ -185,20 +186,23 @@ const CartPage: React.FC<CartPageProps> = ({ cart }) => {
       setCart(null); // Define o carrinho como null localmente
       router.reload(); // Atualiza a página
     } catch (error) {
-      console.error('Error clearing cart:', error);
+      console.error("Error clearing cart:", error);
     }
   };
 
   return (
     <div>
-      {/* <Elements stripe={stripePromise}> */}
-
+      
         <div className="container mx-auto mt-10">
           <div className="flex shadow-md my-10">
             <div className="w-3/4 bg-white px-10 py-10">
               <div className="flex justify-between border-b pb-8">
-                <h1 className="font-semibold text-2xl">Ask-Commerce Shopping Cart</h1>
-                <h2 className="font-semibold text-2xl">{cart?.products.length} Items</h2>
+                <h1 className="font-semibold text-2xl">
+                  Ask-Commerce Shopping Cart
+                </h1>
+                <h2 className="font-semibold text-2xl">
+                  {cart?.products.length} Items
+                </h2>
               </div>
               {cart?.products.map((product) => (
                 <div key={product?.productId}>
@@ -223,16 +227,20 @@ const CartPage: React.FC<CartPageProps> = ({ cart }) => {
                         />
                       </div>
                       <div className="flex flex-col justify-between ml-4 flex-grow">
-                        <span className="font-bold text-sm">{product?.title}</span>
+                        <span className="font-bold text-sm">
+                          {product?.title}
+                        </span>
                       </div>
                     </div>
                     <div className="flex justify-center w-1/5">
-                    <button
-                          onClick={() => handleRemoveFromCart(product?.productId?.toString())}
-                          className="font-semibold text-left uppercase hover:text-red-500 text-gray-500 text-xs"
-                        >
-                          -
-                        </button>
+                      <button
+                        onClick={() =>
+                          handleRemoveFromCart(product?.productId?.toString())
+                        }
+                        className="font-semibold text-left uppercase hover:text-red-500 text-gray-500 text-xs"
+                      >
+                        -
+                      </button>
                       <input
                         className="mx-2 border text-center w-8"
                         type="text"
@@ -240,9 +248,11 @@ const CartPage: React.FC<CartPageProps> = ({ cart }) => {
                         disabled
                       />
                       <button
-                        onClick={() => handleIncreaseQuantity(product?.productId?.toString())}
+                        onClick={() =>
+                          handleIncreaseQuantity(product?.productId?.toString())
+                        }
                         className="font-semibold text-left uppercase hover:text-red-500 text-gray-500 text-xs"
-                        >
+                      >
                         +
                       </button>
                     </div>
@@ -253,17 +263,20 @@ const CartPage: React.FC<CartPageProps> = ({ cart }) => {
                 </div>
               ))}
               <div>Total: ${cart?.total}</div>
-              <button onClick={handleClearCart} className="font-semibold text-left uppercase hover:text-red-500 text-gray-500 text-xs">
+              <button
+                onClick={handleClearCart}
+                style={{ margin: "0 0 20px 0" }} className="font-semibold text-left uppercase hover:text-red-500 text-gray-500 text-xs"
+              >
                 Clear Cart
               </button>
-              {stripe && elements && (
-                <button onClick={handlePayment}>Pay</button>
-              )}
 
+              <Elements stripe={stripePromise} >
+                  <Payment cart={cart}/>
+              </Elements>
+     
             </div>
           </div>
         </div>
-      {/* </Elements> */}
     </div>
   );
 };
