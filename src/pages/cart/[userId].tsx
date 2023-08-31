@@ -2,20 +2,12 @@ import { useCart } from "@/contexts/CartContext";
 import { GetServerSideProps, GetServerSidePropsContext } from "next";
 import { Cart } from "../../types/types";
 import { ParsedUrlQuery } from "querystring";
-import React, { useEffect} from "react";
+import React, { useContext, useEffect} from "react";
 import { useRouter } from "next/router";
-import {
-  useStripe,
-  useElements,
-  CardElement,
-  Elements,
-} from "@stripe/react-stripe-js";
-import { loadStripe } from "@stripe/stripe-js";
-import styled from "styled-components";
+import Link from "next/link";
+import { CartContext } from "@/contexts/CartContext";
 
-const stripePromise = loadStripe(
-  "pk_test_51NgTVbIl0xV6vIx6topedtQlEg7RMmgGJktv58NX59wP6UEZDn5ef2Yicqhd7hk4tCgFOQ7mHFvnvw38mvu9R9aN00cohwyg7J"
-);
+
 
 interface CartPageProps {
   cart: Cart | null;
@@ -53,56 +45,9 @@ export const getServerSideProps: GetServerSideProps<
   }
 };
 
-const Payment: React.FC<CartPageProps> = ({cart}) => {
-
-  const stripe = useStripe();
-  const elements = useElements();
-
-  const handlePayment = async () => {
-    
-    if (!elements || !stripe) {
-      return;
-    }
-    const cardElement = elements.getElement(CardElement);
-    
-    if (!cardElement) {
-      console.error("Card element not found");
-      return;
-    }
-    
-    const { paymentMethod, error } = await stripe.createPaymentMethod({
-      type: "card",
-      card: cardElement, // Explicitly cast to any due to type incompatibility
-    });
-
-    if (error) {
-      console.error("Payment method creation failed:", error);
-    } else if (paymentMethod) {
-      const response = await fetch("http://localhost:3333/cart/payment", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          paymentMethodId: paymentMethod.id,
-          amount: cart?.total,
-        }),
-      });
-
-      const responseData = await response.json();
-      alert('Payment successful');
-      console.log("Payment result:", responseData);
-    }
-  };
 
 
-  return (
-    <div>
-      <CardElement />
-        <button style={{ marginTop: "20px" }} className="margin-top: 220px px-2 py-1 text-xs font-semibold text-gray-900 uppercase transition-colors no-underline duration-300 bg-white rounded hover:bg-gray-200 focus:bg-gray-400 focus:outline-none" onClick={handlePayment}>Submit Payment</button>
-    </div>
-  );
-}
+
 
 const CartPage: React.FC<CartPageProps> = ({ cart }) => {
   const {
@@ -112,6 +57,9 @@ const CartPage: React.FC<CartPageProps> = ({ cart }) => {
     setCart,
   } = useCart();
   const router = useRouter();
+  const cartContext = useContext(CartContext);
+
+  cartContext?.setCart(cart);
  
 
 
@@ -270,10 +218,13 @@ const CartPage: React.FC<CartPageProps> = ({ cart }) => {
                 Clear Cart
               </button>
 
-              <Elements stripe={stripePromise} >
-                  <Payment cart={cart}/>
-              </Elements>
-     
+              
+                <Link href={`/payment`}>
+                  <button className="px-2 py-1 text-xs font-semibold text-gray-900 uppercase transition-colors no-underline duration-300 bg-white rounded hover:bg-gray-200 focus:bg-gray-400 focus:outline-none">
+                      Pay
+                  </button>
+                </Link>
+                        
             </div>
           </div>
         </div>
