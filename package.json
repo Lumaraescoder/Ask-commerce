@@ -27,6 +27,8 @@
   },
   "dependencies": {
     "@heroicons/react": "^1.0.6",
+    "@stripe/react-stripe-js": "^2.1.2",
+    "@stripe/stripe-js": "^2.1.0",
     "@tremor/react": "^2.8.3",
     "@types/styled-components": "^5.1.26",
     "formik": "^2.2.9",
