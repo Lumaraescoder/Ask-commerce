@@ -1,6 +1,7 @@
 import { Meta } from "@/layouts/Meta";
 import { Main } from "@/templates/Main";
 import { getRandomImage } from "../../layouts/Products";
+import Cookies from "js-cookie";
 
 export async function getStaticPaths() {
   //const res = await fetch("https://fakestoreapi.com/products");
@@ -8,7 +9,7 @@ export async function getStaticPaths() {
   const data = await res.json();
 
   const paths = data.map((product: any) => {
-    console.log("data", data);
+    //console.log("data", data);
     return {
       params: { id: product._id },
     };
@@ -21,14 +22,28 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps(context: any) {
-  console.log("context --------->", context);
+  //console.log("context --------->", context);
   const id = context.params.id;
-  console.log("id --------------->", id);
+  //console.log("id --------------->", id);
   //const res = await fetch("https://fakestoreapi.com/products/" + id);
   const res = await fetch(`http://localhost:3333/products/${id}`);
   const data = await res.json();
 
-  data.randomImage = getRandomImage(data.category);
+  //get category da data
+  const category = data.category;
+  // get imagem do cookie
+  const storedImage = Cookies.get(`product_${category}`);
+  let randomImage;
+  // se houver imagem define-se a imagem a ser renderizada como essa imagem
+  if (storedImage) {
+    randomImage = storedImage;
+  } else {
+    randomImage = getRandomImage(category);
+    // armazenar a imagem no cookie para a categoria
+    Cookies.set(`product_${category}`, randomImage);
+  }
+
+  data.randomImage = randomImage;
 
   return {
     props: { product: data },
@@ -94,7 +109,8 @@ const getSingleProduct = ({ product }: { product: any }) => {
             <div className="gap-4 md:grid-cols-1">
               <img
                 alt={product.title}
-                src={`../../images/${product.randomImage}`}
+                //src={`../../images/${product.randomImage}`}
+                src={`/images/${getRandomImage(product.category)}`}
                 className="aspect-square w-full rounded-xl object-contain"
               />
             </div>

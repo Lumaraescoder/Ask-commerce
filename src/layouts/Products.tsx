@@ -1,6 +1,7 @@
 import React, { useContext} from "react";
 import useSWR from "swr";
 import Link from "next/link";
+import Cookies from "js-cookie";
 import { ProductContext } from "@/contexts/ProductContext";
 
 interface Products {
@@ -9,10 +10,6 @@ interface Products {
   price: number;
   description: string;
   category: string;
-  image: {
-    data: string;
-    contentType: string;
-  };
   rating: {
     rate: number;
     count: number;
@@ -27,12 +24,53 @@ const categoryToImages: Record<string, string[]> = {
 };
 
 export const getRandomImage = (category: string) => {
-  const images = categoryToImages[category];
-  if (!images || images.length === 0) {
+  if (typeof window === "undefined") {
+    // Execution on the server (server-side rendering), do nothing
+    return "";
+  }
+
+  const usedImagesJSON = localStorage.getItem(`used_images_${category}`);
+  let usedImages = [];
+
+  if (usedImagesJSON) {
+    try {
+      usedImages = JSON.parse(usedImagesJSON);
+    } catch (error) {
+      console.error("Error parsing usedImages JSON:", error);
+    }
+  }
+
+  const availableImages = categoryToImages[category] || [];
+
+  if (availableImages.length === 0) {
+    // usar a imagem default se não houver imagens disponíveis para aquela categoria
     return "default.jpg";
   }
-  const randomIndex = Math.floor(Math.random() * images.length);
-  return images[randomIndex];
+
+  if (usedImages.length >= availableImages.length) {
+    // Todas as imagens da categoria foram utilizadas, reset à lista
+    usedImages = [];
+  }
+
+  // filtrar as imagens que ainda não foram usadas
+  const unusedImages = availableImages.filter((image) => !usedImages.includes(image));
+
+  if (unusedImages.length === 0) {
+    // todas as imagens da categoria foram usadas, usar a default
+    return "default.jpg";
+  }
+
+  // Choose a randomly unused image
+  const randomIndex = Math.floor(Math.random() * unusedImages.length);
+  const randomImage = unusedImages[randomIndex];
+
+  // push imagem usada para array de imagens usadas
+  usedImages.push(randomImage);
+
+  // armazenar as imagens usadas no local storage
+  localStorage.setItem(`used_images_${category}`, JSON.stringify(usedImages));
+
+  return randomImage;
 };
 
 const getAllProducts = (url: string) =>
@@ -45,13 +83,13 @@ const Products: React.FC = () => {
     getAllProducts
   );
 
-  console.log("Received data:", data);
+  //console.log("Received data:", data);
 
   const { productData } = useContext(ProductContext);
 
   const filteredProducts = productData.length === 0 ? data : productData;
 
-  console.log("Filtered products:", filteredProducts);
+  //console.log("Filtered products:", filteredProducts);
 
   if (error) {
     return <p>Error</p>;
@@ -81,7 +119,6 @@ const Products: React.FC = () => {
             <img
               className="object-cover w-full h-48 mt-2"
               src={`/images/${getRandomImage(product.category)}`}
-              //src={`data:${product.image.contentType};base64,${product.image.data}`}
               alt={product.title}
             />
 
@@ -89,7 +126,7 @@ const Products: React.FC = () => {
               <h1 className="text-lg font-bold text-white">
                 {product.price}€
               </h1>
-              <Link href={`/products/${product._id}`}>
+              <Link href={`/products/${product._id}`} passHref>
                 <button className="px-2 py-1 text-xs font-semibold text-gray-900 uppercase transition-colors no-underline duration-300 bg-white rounded hover:bg-gray-200 focus:bg-gray-400 focus:outline-none">
                   Details
                 </button>

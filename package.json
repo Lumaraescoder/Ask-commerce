@@ -30,6 +30,7 @@
     "@tremor/react": "^2.8.3",
     "@types/styled-components": "^5.1.26",
     "formik": "^2.2.9",
+    "js-cookie": "^3.0.5",
     "next": "^13.3.0",
     "next-seo": "^5.15.0",
     "next-sitemap": "^4.0.6",

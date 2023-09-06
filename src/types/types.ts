@@ -7,10 +7,6 @@ export interface Product {
   price: number;
   description: string;
   category: string;
-  image: {
-    data: string;
-    contentType: string;
-  };
   rating: {
     rate: number;
     count: number;
