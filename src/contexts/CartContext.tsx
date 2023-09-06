@@ -202,3 +202,5 @@ export const useCart = (): CartContextData => {
 
   return context;
 };
+
+export {CartContext};

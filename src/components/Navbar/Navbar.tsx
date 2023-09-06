@@ -1,10 +1,11 @@
+import Link from "next/link";
 import React from "react";
 
 
 
 export const Navbar = () => {
 //obtém o userId do cookie para utilizar no link para aceder ao carrinho do $userId específico e dinâmico
-  const userId = document.cookie.replace(/(?:(?:^|.*;\s*)userId\s*=\s*([^;]*).*$)|^.*$/, "$1");
+  const userId = localStorage.getItem("userId");
 
   return (
     <div>
@@ -63,24 +64,24 @@ export const Navbar = () => {
             {/* Right section */}
             <div className="flex items-center">
             <div className="ml-10 flex items-baseline space-x-4">
-                  <a
+                  <Link
                     href="/login"
                     className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
                   >
                     Login
-                  </a>
-                  <a
+                  </Link>
+                  <Link
                     href="/register"
                     className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
                   >
                     Register
-                  </a>
-                  <a
+                  </Link>
+                  <Link
                   href={`/cart/${userId}`}
                   className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
                 >
                   Cart
-                </a>
+                </Link>
                   {/* Add more links as needed */}
                 </div>
             </div>
