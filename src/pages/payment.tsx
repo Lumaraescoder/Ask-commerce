@@ -15,7 +15,6 @@ const stripePromise = loadStripe(
 const CheckoutForm: React.FC = () => {
   const stripe = useStripe(); // o que vai permitir interagir com o stripe
   const elements = useElements(); // o que vai permitir usar os components UI
-  const [isProcessing, setIsProcessing] = useState(false);
 
 
   const handlePayment = async () => {
@@ -23,8 +22,6 @@ const CheckoutForm: React.FC = () => {
     if (!elements || !stripe) {
       return;
     }
-
-    setIsProcessing(true);
 
     const { error } = await stripe.confirmPayment({
       //it communicates with Stripe to securely tokenize the card information provided by the customer and returns a result
@@ -49,7 +46,6 @@ const CheckoutForm: React.FC = () => {
       <PaymentElement />
       
       <button
-        disabled={isProcessing}
         style={{marginTop: "20px"}}
         className="margin-top: 220px px-2 py-4 text-xs font-semibold text-blue-700 uppercase transition-colors no-underline duration-300 bg-white rounded hover:bg-blue-300 focus:bg-blue-400 focus:outline-none"
         onClick={handlePayment}
