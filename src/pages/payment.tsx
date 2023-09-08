@@ -67,17 +67,25 @@ const Payment: React.FC = () => {
   const [clientSecret, setClientSecret] = useState("");
   const cartData = useContext(CartContext);
 
-  useEffect(() => {
 
+  useEffect(() => {
     fetch("http://localhost:3333/cart/payment", {
       method: "POST",
+      headers:{
+        "Content-Type": "application/json",
+        'Authorization': "Bearer"
+      },
       body: JSON.stringify({
         amount: cartData?.cart?.total
       }), 
     }).then(async (r) => {
-      const {clientSecret} = await r.json();
-      
-      setClientSecret(clientSecret);
+      if(r.ok){
+        const {clientSecret} = await r.json();
+        setClientSecret(clientSecret);
+
+      } else{
+        console.error("failed to fetch client secret")
+      }
     })
   }, [cartData?.cart?.total]);
 
