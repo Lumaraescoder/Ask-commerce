@@ -7,10 +7,10 @@ import {
 import { loadStripe } from "@stripe/stripe-js";
 import { CartContext } from "@/contexts/CartContext";
 import { useContext, useEffect, useState } from "react";
-
 const stripePromise = loadStripe(
   "pk_test_51NgTVbIl0xV6vIx6topedtQlEg7RMmgGJktv58NX59wP6UEZDn5ef2Yicqhd7hk4tCgFOQ7mHFvnvw38mvu9R9aN00cohwyg7J"
 );
+
 
 const CheckoutForm: React.FC = () => {
   const stripe = useStripe(); // o que vai permitir interagir com o stripe
@@ -27,13 +27,16 @@ const CheckoutForm: React.FC = () => {
       //it communicates with Stripe to securely tokenize the card information provided by the customer and returns a result
       elements,
       confirmParams: {
-        return_url: `${window.location.origin}/payment`
-      }
+      },
+     redirect: 'if_required'
     });
-
+    
     if (error) {
       console.error("Payment method creation failed:", error);
-    } 
+    }
+
+    window.location.href = 'http://localhost:8000/';
+    alert("Payment successful");
   };
 
   return (
@@ -62,7 +65,6 @@ const Payment: React.FC = () => {
 
   const [clientSecret, setClientSecret] = useState("");
   const cartData = useContext(CartContext);
-
 
   useEffect(() => {
     fetch("http://localhost:3333/cart/payment", {
