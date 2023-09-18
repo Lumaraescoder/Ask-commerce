@@ -26,7 +26,7 @@ export const getServerSideProps: GetServerSideProps<
 
   try {
     const response = await fetch(
-      `http://localhost:3333/cart/carts/user/${userId}`
+      `https://ask-commerce-api.onrender.com/cart/carts/user/${userId}`
     );
     const data = await response.json();
 
@@ -106,7 +106,7 @@ const CartPage: React.FC<CartPageProps> = ({ cart }) => {
         return;
       }
 
-      await fetch(`http://localhost:3333/cart/addCart/${userId}`, {
+      await fetch(`https://ask-commerce-api.onrender.com/cart/addCart/${userId}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

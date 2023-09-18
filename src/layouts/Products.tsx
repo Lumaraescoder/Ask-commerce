@@ -40,8 +40,7 @@ const getAllProducts = (url: string) =>
 
 const Products: React.FC = () => {
   const { data, error, isLoading } = useSWR(
-    //"https://fakestoreapi.com/products",
-    "http://localhost:3333/products",
+    "https://ask-commerce-api.onrender.com/products",
     getAllProducts
   );
 

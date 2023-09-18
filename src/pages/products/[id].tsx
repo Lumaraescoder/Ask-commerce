@@ -4,7 +4,7 @@ import { getRandomImage } from "../../layouts/Products";
 
 export async function getStaticPaths() {
   //const res = await fetch("https://fakestoreapi.com/products");
-  const res = await fetch("http://localhost:3333/products/");
+  const res = await fetch("https://ask-commerce-api.onrender.com/products/");
   const data = await res.json();
 
   const paths = data.map((product: any) => {
@@ -25,7 +25,7 @@ export async function getStaticProps(context: any) {
   const id = context.params.id;
   console.log("id --------------->", id);
   //const res = await fetch("https://fakestoreapi.com/products/" + id);
-  const res = await fetch(`http://localhost:3333/products/${id}`);
+  const res = await fetch(`https://ask-commerce-api.onrender.com/products/${id}`);
   const data = await res.json();
 
   data.randomImage = getRandomImage(data.category);
@@ -63,7 +63,7 @@ const getSingleProduct = ({ product }: { product: any }) => {
     const userId = localStorage.getItem("userId");
 
     try {
-      await fetch(`http://localhost:3333/cart/addCart/${userId}`, {
+      await fetch(`https://ask-commerce-api.onrender.com/cart/addCart/${userId}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
