@@ -44,6 +44,7 @@ export const fetchCartData = async (url: string, userId: string) => {
 };
 
 export const CartProvider: React.FC<React.PropsWithChildren<{}>> = ({ children }) => {
+  //const [cart, setCart] = useState<Cart | null>(null);
   const [cart, setCart] = useState<Cart | null>({ _id: '', userId: '', products: [], total: 0 });
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<any>(null);
@@ -166,7 +167,7 @@ export const CartProvider: React.FC<React.PropsWithChildren<{}>> = ({ children }
     try {
       const userId = getCookie("userId");
       if (userId) {
-        await fetch(`https://ask-commerce-api.onrender.com/cart/deleteCart/${userId}`, {
+        await fetch(`http://localhost:3333/cart/deleteCart/${userId}`, {
           method: 'DELETE',
         });
       }
