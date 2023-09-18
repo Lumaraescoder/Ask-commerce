@@ -2,7 +2,7 @@
   "name": "next-js-boilerplate",
   "version": "3.9.0",
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev --port 8000",
     "build": "next build",
     "start": "next start",
     "build-stats": "cross-env ANALYZE=true npm run build",
@@ -27,6 +27,8 @@
   },
   "dependencies": {
     "@heroicons/react": "^1.0.6",
+    "@stripe/react-stripe-js": "^2.1.2",
+    "@stripe/stripe-js": "^2.1.0",
     "@tremor/react": "^2.8.3",
     "@types/styled-components": "^5.1.26",
     "formik": "^2.2.9",
@@ -34,6 +36,7 @@
     "next-seo": "^5.15.0",
     "next-sitemap": "^4.0.6",
     "node-modules": "^1.0.1",
+    "querystring": "^0.2.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "styled-components": "^6.0.0-rc.3",

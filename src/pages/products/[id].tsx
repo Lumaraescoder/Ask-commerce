@@ -1,13 +1,16 @@
 import { Meta } from "@/layouts/Meta";
 import { Main } from "@/templates/Main";
+import { getRandomImage } from "../../layouts/Products";
 
 export async function getStaticPaths() {
-  const res = await fetch("https://fakestoreapi.com/products");
+  //const res = await fetch("https://fakestoreapi.com/products");
+  const res = await fetch("http://localhost:3333/products/");
   const data = await res.json();
 
   const paths = data.map((product: any) => {
+    console.log("data", data);
     return {
-      params: { id: product.id.toString() },
+      params: { id: product._id },
     };
   });
 
@@ -18,16 +21,25 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps(context: any) {
+  console.log("context --------->", context);
   const id = context.params.id;
-  const res = await fetch("https://fakestoreapi.com/products/" + id);
+  console.log("id --------------->", id);
+  //const res = await fetch("https://fakestoreapi.com/products/" + id);
+  const res = await fetch(`http://localhost:3333/products/${id}`);
   const data = await res.json();
+
+  data.randomImage = getRandomImage(data.category);
 
   return {
     props: { product: data },
   };
 }
 
-const renderRating = (rating: number) => {
+const renderRating = (rating: { rate?: number }) => {
+  if (!rating || typeof rating.rate !== "number" || isNaN(rating.rate)) {
+    return <p>No rating available</p>; // Display a message if rating is not available
+  }
+
   const starUrl = "https://www.svgrepo.com/show/444861/star.svg";
   const emptyStarUrl = "https://www.svgrepo.com/show/513120/star.svg";
   const stars = [];
@@ -37,7 +49,7 @@ const renderRating = (rating: number) => {
       <img
         key={i}
         width="20px"
-        src={i <= rating ? starUrl : emptyStarUrl}
+        src={i <= rating.rate ? starUrl : emptyStarUrl}
         alt={`star ${i}`}
         className="mr-1"
       />
@@ -46,7 +58,34 @@ const renderRating = (rating: number) => {
   return <div className="flex">{stars}</div>;
 };
 
-const getSingleProduct = ({ product } : {product: any}) => {
+const getSingleProduct = ({ product }: { product: any }) => {
+  const addToCart = async (product: any) => {
+    const userId = localStorage.getItem("userId");
+
+    try {
+      await fetch(`http://localhost:3333/cart/addCart/${userId}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          userId,
+          products: [
+            {
+              productId: product._id,
+              title: product.title,
+              quantity: 1,
+              price: product.price,
+            },
+          ],
+        }),
+      });
+      alert('Added successfully to cart');
+    } catch (error) {
+      console.error("Error adding product in cart:", error);
+    }
+  };
+
   return (
     <Main meta={<Meta title="Lorem ipsum" description="Lorem ipsum" />}>
       <section className="border">
@@ -54,8 +93,8 @@ const getSingleProduct = ({ product } : {product: any}) => {
           <div className="grid grid-cols-1 items-center gap-8 md:grid-cols-2">
             <div className="gap-4 md:grid-cols-1">
               <img
-                alt="Les Paul"
-                src={product.image}
+                alt={product.title}
+                src={`../../images/${product.randomImage}`}
                 className="aspect-square w-full rounded-xl object-contain"
               />
             </div>
@@ -68,9 +107,11 @@ const getSingleProduct = ({ product } : {product: any}) => {
                   <p className="text-base font-medium">{product.category}</p>
                   <p className="text-lg font-bold">{product.price}€</p>
                   <div className="flex items-center">
-                    {renderRating(product.rating.rate)}
+                    {renderRating(product.rating)}
                     <p className="ml-2 text-sm font-medium text-gray-500 dark:text-gray-400">
-                      {product.rating.rate} out of 5
+                      {product.rating && product.rating.count
+                        ? `${product.rating.count} reviews`
+                        : "No reviews available"}
                     </p>
                     <div className="flex ml-5">
                       <img
@@ -91,6 +132,12 @@ const getSingleProduct = ({ product } : {product: any}) => {
                   <p>{product.description}</p>
                 </div>
               </div>
+              <button
+                onClick={() => addToCart(product)}
+                className="px-2 py-1 text-xs font-semibold text-gray-900 uppercase transition-colors no-underline duration-300 bg-white rounded hover:bg-gray-200 focus:bg-gray-400 focus:outline-none"
+              >
+                Add to cart
+              </button>
             </div>
           </div>
         </div>
