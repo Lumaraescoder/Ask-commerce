@@ -1,4 +1,3 @@
-import { title } from "process";
 import { string, number } from "yup";
 
 export interface Product {
