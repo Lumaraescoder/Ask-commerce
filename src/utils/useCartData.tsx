@@ -14,10 +14,10 @@ const useCartData = (userId: string) => {
   const cart = data?.find((cart: Cart) => cart.userId === userId) || null;
 
   return {
-    cart: data,
+    cart,
     isLoading: !error && !data,
     error,
-  };
+};
 };
 
 export default useCartData;
