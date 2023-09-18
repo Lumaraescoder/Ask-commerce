@@ -9,10 +9,7 @@ interface Products {
   price: number;
   description: string;
   category: string;
-  image: {
-    data: string;
-    contentType: string;
-  };
+  image: string;
   rating: {
     rate: number;
     count: number;
@@ -26,14 +23,7 @@ const categoryToImages: Record<string, string[]> = {
   Other: ['Others.jpg', 'Others2.jpg', 'Others3.jpg', 'Others4.jpg', 'Others5.jpg'],
 };
 
-export const getRandomImage = (category: string) => {
-  const images = categoryToImages[category];
-  if (!images || images.length === 0) {
-    return "default.jpg";
-  }
-  const randomIndex = Math.floor(Math.random() * images.length);
-  return images[randomIndex];
-};
+
 
 const getAllProducts = (url: string) =>
   fetch(url).then((res) => res.json());
@@ -79,8 +69,8 @@ const Products: React.FC = () => {
 
             <img
               className="object-cover w-full h-48 mt-2"
-              src={`/images/${getRandomImage(product.category)}`}
-              //src={`data:${product.image.contentType};base64,${product.image.data}`}
+              // src={`/images/${getRandomImage(product.category)}`}
+              src={product.image}
               alt={product.title}
             />
 

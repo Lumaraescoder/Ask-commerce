@@ -44,7 +44,6 @@ export const fetchCartData = async (url: string, userId: string) => {
 };
 
 export const CartProvider: React.FC<React.PropsWithChildren<{}>> = ({ children }) => {
-  //const [cart, setCart] = useState<Cart | null>(null);
   const [cart, setCart] = useState<Cart | null>({ _id: '', userId: '', products: [], total: 0 });
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<any>(null);
