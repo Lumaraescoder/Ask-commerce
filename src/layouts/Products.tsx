@@ -69,7 +69,6 @@ const Products: React.FC = () => {
 
             <img
               className="object-cover w-full h-48 mt-2"
-              // src={`/images/${getRandomImage(product.category)}`}
               src={product.image}
               alt={product.title}
             />

@@ -29,10 +29,12 @@ export const getServerSideProps: GetServerSideProps<
       `https://ask-commerce-api.onrender.com/cart/carts/user/${userId}`
     );
     const data = await response.json();
+    console.log('data ->', data)
     return {
       props: {
         cart: data,
       },
+      
     };
   } catch (error) {
     console.error("Error fetching cart:", error);
@@ -169,7 +171,11 @@ const CartPage: React.FC<CartPageProps> = ({ cart }) => {
                   <div className="flex items-center hover:bg-gray-100 -mx-8 px-6 py-5">
                     <div className="flex w-2/5">
                       <div className="w-20">
-                      {/* <img className="h-24" src={product?.image} alt="" /> */}
+                        <img
+                          className="h-24"
+                          src={product?.image} 
+                          alt={product?.title} 
+                        />
                       </div>
                       <div className="flex flex-col justify-between ml-4 flex-grow">
                         <span className="font-bold text-sm">
