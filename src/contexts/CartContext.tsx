@@ -35,11 +35,11 @@ export const fetchCartData = async (url: string, userId: string) => {
   
   const data = await res.json();
 
-  console.log("userId from the cookie ->", userId);
-  console.log("---------------------------------------------------------------------------")
-  console.log("res ->", res.url);
-  console.log("data on fetchCartData ->", data);
-  console.log("---------------------------------------------------------------------------")
+  //console.log("userId from the cookie ->", userId);
+  //console.log("---------------------------------------------------------------------------")
+  //console.log("res ->", res.url);
+  //console.log("data on fetchCartData ->", data);
+ // console.log("---------------------------------------------------------------------------")
   return data;
 };
 
@@ -89,6 +89,7 @@ export const CartProvider: React.FC<React.PropsWithChildren<{}>> = ({ children }
             title: product.title,
             quantity: 1,
             price: product.price,
+            image: product.image,
             _id: `${product?._id}`,
           });
         }
@@ -104,6 +105,7 @@ export const CartProvider: React.FC<React.PropsWithChildren<{}>> = ({ children }
               title: product.title,
               quantity: 1,
               price: product.price,
+              image: product.image,
               _id: `${product?._id}`,
             },
           ],
