@@ -16,7 +16,6 @@ interface Products {
   };
 }
 
-
 const getAllProducts = (url: string) =>
   fetch(url).then((res) => res.json());
 
@@ -26,13 +25,9 @@ const Products: React.FC = () => {
     getAllProducts
   );
 
-  console.log("Received data:", data);
-
   const { productData } = useContext(ProductContext);
 
   const filteredProducts = productData.length === 0 ? data : productData;
-
-  console.log("Filtered products:", filteredProducts);
 
   if (error) {
     return <p>Error</p>;
@@ -69,7 +64,7 @@ const Products: React.FC = () => {
               <h1 className="text-lg font-bold text-white">
                 {product.price}€
               </h1>
-              <Link href={`/products/${product._id}`}>
+              <Link href={`/products/${product._id}`} passHref>
                 <button className="px-2 py-1 text-xs font-semibold text-gray-900 uppercase transition-colors no-underline duration-300 bg-white rounded hover:bg-gray-200 focus:bg-gray-400 focus:outline-none">
                   Details
                 </button>

@@ -34,7 +34,7 @@ export const getServerSideProps: GetServerSideProps<
   CartPageParams
 > = async (context: GetServerSidePropsContext<CartPageParams>) => {
   const { userId } = context.params || {}; // Verifica se context.params é nulo e atribui um objeto vazio em caso afirmativo
-  console.log("userId on [userId].tsx ->", userId);
+  //console.log("userId on [userId].tsx ->", userId);
 
   try {
     const response = await fetch(
@@ -185,8 +185,8 @@ const CartPage: React.FC<CartPageProps> = ({ cart }) => {
                       <div className="w-20">
                         <img
                           className="h-24"
-                          src={product?.image} 
-                          alt={product?.title} 
+                          src={product?.image}
+                          alt={product?.title}
                         />
                       </div>
                       <div className="flex flex-col justify-between ml-4 flex-grow">
