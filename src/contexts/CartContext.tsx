@@ -89,6 +89,7 @@ export const CartProvider: React.FC<React.PropsWithChildren<{}>> = ({ children }
             title: product.title,
             quantity: 1,
             price: product.price,
+            image: product.image,
             _id: `${product?._id}`,
           });
         }
@@ -104,6 +105,7 @@ export const CartProvider: React.FC<React.PropsWithChildren<{}>> = ({ children }
               title: product.title,
               quantity: 1,
               price: product.price,
+              image: product.image,
               _id: `${product?._id}`,
             },
           ],
