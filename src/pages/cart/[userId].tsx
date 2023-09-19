@@ -7,6 +7,18 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import { CartContext } from "@/contexts/CartContext";
 
+export interface Product {
+  _id: string;
+  title: string;
+  price: number;
+  description: string;
+  category: string;
+  image: string;
+  rating: {
+    rate: number;
+    count: number;
+  };
+}
 
 
 interface CartPageProps {
@@ -29,10 +41,12 @@ export const getServerSideProps: GetServerSideProps<
       `https://ask-commerce-api.onrender.com/cart/carts/user/${userId}`
     );
     const data = await response.json();
+    console.log('data ->', data)
     return {
       props: {
         cart: data,
       },
+      
     };
   } catch (error) {
     console.error("Error fetching cart:", error);
