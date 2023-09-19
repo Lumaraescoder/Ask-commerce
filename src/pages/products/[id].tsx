@@ -1,14 +1,13 @@
 import { Meta } from "@/layouts/Meta";
 import { Main } from "@/templates/Main";
-import { getRandomImage } from "../../layouts/Products";
 
 export async function getStaticPaths() {
   //const res = await fetch("https://fakestoreapi.com/products");
-  const res = await fetch("http://localhost:3333/products/");
+  const res = await fetch("https://ask-commerce-api.onrender.com/products/");
   const data = await res.json();
 
   const paths = data.map((product: any) => {
-    console.log("data", data);
+    //console.log("data", data);
     return {
       params: { id: product._id },
     };
@@ -21,14 +20,9 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps(context: any) {
-  console.log("context --------->", context);
   const id = context.params.id;
-  console.log("id --------------->", id);
-  //const res = await fetch("https://fakestoreapi.com/products/" + id);
-  const res = await fetch(`http://localhost:3333/products/${id}`);
+  const res = await fetch(`https://ask-commerce-api.onrender.com/products/${id}`);
   const data = await res.json();
-
-  data.randomImage = getRandomImage(data.category);
 
   return {
     props: { product: data },
@@ -63,7 +57,7 @@ const getSingleProduct = ({ product }: { product: any }) => {
     const userId = localStorage.getItem("userId");
 
     try {
-      await fetch(`http://localhost:3333/cart/addCart/${userId}`, {
+      await fetch(`https://ask-commerce-api.onrender.com/cart/addCart/${userId}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -94,7 +88,7 @@ const getSingleProduct = ({ product }: { product: any }) => {
             <div className="gap-4 md:grid-cols-1">
               <img
                 alt={product.title}
-                src={`../../images/${product.randomImage}`}
+                src={product.image}
                 className="aspect-square w-full rounded-xl object-contain"
               />
             </div>

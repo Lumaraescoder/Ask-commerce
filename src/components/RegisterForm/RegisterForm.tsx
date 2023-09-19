@@ -49,7 +49,7 @@ const RegisterForm = () => {
     setSubmitting: (isSubmitting: boolean) => void
   ) => {
     const loggedInResponse = await fetch(
-      "http://localhost:3000/auth/register",
+      "https://ask-commerce-api.onrender.com/auth/register",
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },

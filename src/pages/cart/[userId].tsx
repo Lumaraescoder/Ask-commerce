@@ -7,6 +7,18 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import { CartContext } from "@/contexts/CartContext";
 
+export interface Product {
+  _id: string;
+  title: string;
+  price: number;
+  description: string;
+  category: string;
+  image: string;
+  rating: {
+    rate: number;
+    count: number;
+  };
+}
 
 
 interface CartPageProps {
@@ -22,18 +34,19 @@ export const getServerSideProps: GetServerSideProps<
   CartPageParams
 > = async (context: GetServerSidePropsContext<CartPageParams>) => {
   const { userId } = context.params || {}; // Verifica se context.params é nulo e atribui um objeto vazio em caso afirmativo
-  console.log("userId on [userId].tsx ->", userId);
+  //console.log("userId on [userId].tsx ->", userId);
 
   try {
     const response = await fetch(
-      `http://localhost:3333/cart/carts/user/${userId}`
+      `https://ask-commerce-api.onrender.com/cart/carts/user/${userId}`
     );
     const data = await response.json();
-
+    console.log('data ->', data)
     return {
       props: {
         cart: data,
       },
+      
     };
   } catch (error) {
     console.error("Error fetching cart:", error);
@@ -74,6 +87,8 @@ const CartPage: React.FC<CartPageProps> = ({ cart }) => {
         addToCart(removedProduct);
       }
     }
+    console.log(cart);
+
   }, [cart, router.query]);
 
   const handleRemoveFromCart = async (productId?: string) => {
@@ -106,7 +121,7 @@ const CartPage: React.FC<CartPageProps> = ({ cart }) => {
         return;
       }
 
-      await fetch(`http://localhost:3333/cart/addCart/${userId}`, {
+      await fetch(`https://ask-commerce-api.onrender.com/cart/addCart/${userId}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -170,8 +185,8 @@ const CartPage: React.FC<CartPageProps> = ({ cart }) => {
                       <div className="w-20">
                         <img
                           className="h-24"
-                          src="https://drive.google.com/uc?id=18KkAVkGFvaGNqPy2DIvTqmUH_nk39o3z"
-                          alt=""
+                          src={product?.image}
+                          alt={product?.title}
                         />
                       </div>
                       <div className="flex flex-col justify-between ml-4 flex-grow">

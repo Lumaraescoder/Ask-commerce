@@ -67,7 +67,7 @@ const Payment: React.FC = () => {
   const cartData = useContext(CartContext);
 
   useEffect(() => {
-    fetch("http://localhost:3333/cart/payment", {
+    fetch("https://ask-commerce-api.onrender.com/cart/payment", {
       method: "POST",
       headers:{
         "Content-Type": "application/json",
