@@ -16,14 +16,6 @@ interface Products {
   };
 }
 
-const categoryToImages: Record<string, string[]> = {
-  Eletronics: ['Eletronics.jpg', "Eletronics2.jpg", "Eletronics3.jpg", "Eletronics4.jpg", "Eletronics5.jpg"],
-  Books: ['Book.jpg', 'Book2.jpg', 'Book3.jpg', 'Book4.jpg', 'Book5.jpg'],
-  Clothing: ['Clothing.jpg', 'Clothing2.jpg', 'Clothing3.jpg', 'Clothing4.jpg', 'Clothing5.jpg'],
-  Other: ['Others.jpg', 'Others2.jpg', 'Others3.jpg', 'Others4.jpg', 'Others5.jpg'],
-};
-
-
 
 const getAllProducts = (url: string) =>
   fetch(url).then((res) => res.json());

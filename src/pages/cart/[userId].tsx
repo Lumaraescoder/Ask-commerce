@@ -7,6 +7,18 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import { CartContext } from "@/contexts/CartContext";
 
+export interface Product {
+  _id: string;
+  title: string;
+  price: number;
+  description: string;
+  category: string;
+  image: string;
+  rating: {
+    rate: number;
+    count: number;
+  };
+}
 
 
 interface CartPageProps {
