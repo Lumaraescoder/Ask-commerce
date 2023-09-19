@@ -1,11 +1,9 @@
 import { Meta } from "@/layouts/Meta";
 import { Main } from "@/templates/Main";
-//import { getRandomImage } from "../../layouts/Products";
-//import Cookies from "js-cookie";
 
 export async function getStaticPaths() {
   //const res = await fetch("https://fakestoreapi.com/products");
-  const res = await fetch("http://localhost:3333/products/");
+  const res = await fetch("https://ask-commerce-api.onrender.com/products/");
   const data = await res.json();
 
   const paths = data.map((product: any) => {
@@ -22,28 +20,9 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps(context: any) {
-  //console.log("context --------->", context);
   const id = context.params.id;
-  //console.log("id --------------->", id);
-  //const res = await fetch("https://fakestoreapi.com/products/" + id);
-  const res = await fetch(`http://localhost:3333/products/${id}`);
+  const res = await fetch(`https://ask-commerce-api.onrender.com/products/${id}`);
   const data = await res.json();
-
-  //get category da data
-  // const category = data.category;
-  // // get imagem do cookie
-  // const storedImage = Cookies.get(`product_${category}`);
-  // let randomImage;
-  // // se houver imagem define-se a imagem a ser renderizada como essa imagem
-  // if (storedImage) {
-  //   randomImage = storedImage;
-  // } else {
-  //   randomImage = getRandomImage(category);
-  //   // armazenar a imagem no cookie para a categoria
-  //   Cookies.set(`product_${category}`, randomImage);
-  // }
-
-  // data.randomImage = randomImage;
 
   return {
     props: { product: data },
@@ -78,7 +57,7 @@ const getSingleProduct = ({ product }: { product: any }) => {
     const userId = localStorage.getItem("userId");
 
     try {
-      await fetch(`http://localhost:3333/cart/addCart/${userId}`, {
+      await fetch(`https://ask-commerce-api.onrender.com/cart/addCart/${userId}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -110,7 +89,6 @@ const getSingleProduct = ({ product }: { product: any }) => {
               <img
                 alt={product.title}
                 src={product.image}
-                //src={`/images/${getRandomImage(product.category)}`}
                 className="aspect-square w-full rounded-xl object-contain"
               />
             </div>

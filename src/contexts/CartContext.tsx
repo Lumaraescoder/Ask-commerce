@@ -56,7 +56,7 @@ export const CartProvider: React.FC<React.PropsWithChildren<{}>> = ({ children }
       try {
         const userId = getCookie("userId");
         if (userId) {
-          const url = `http://localhost:3333/cart/carts/user`;
+          const url = `https://ask-commerce-api.onrender.com/cart/carts/user`;
           const data = await fetchCartData(url, userId);
           if (!data) {
             setCart(null);
@@ -118,7 +118,7 @@ export const CartProvider: React.FC<React.PropsWithChildren<{}>> = ({ children }
 
   const removeFromCart = async (productId: string) => {
     try {
-      await fetch(`http://localhost:3333/cart/carts/${cart?.userId}/${productId}`, {
+      await fetch(`https://ask-commerce-api.onrender.com/cart/carts/${cart?.userId}/${productId}`, {
         method: 'DELETE',
       });
   
@@ -158,7 +158,7 @@ export const CartProvider: React.FC<React.PropsWithChildren<{}>> = ({ children }
   
       // Atualiza o carrinho no servidor
       if (cart?.userId) {
-        await fetchCartData(`http://localhost:3333/cart/carts/user`, cart?.userId);
+        await fetchCartData(`https://ask-commerce-api.onrender.com/cart/carts/user`, cart?.userId);
       }
     } catch (error) {
       console.error('Error removing product from cart:', error);

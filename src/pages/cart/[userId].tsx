@@ -26,10 +26,9 @@ export const getServerSideProps: GetServerSideProps<
 
   try {
     const response = await fetch(
-      `http://localhost:3333/cart/carts/user/${userId}`
+      `https://ask-commerce-api.onrender.com/cart/carts/user/${userId}`
     );
     const data = await response.json();
-
     return {
       props: {
         cart: data,
@@ -74,6 +73,8 @@ const CartPage: React.FC<CartPageProps> = ({ cart }) => {
         addToCart(removedProduct);
       }
     }
+    console.log(cart);
+
   }, [cart, router.query]);
 
   const handleRemoveFromCart = async (productId?: string) => {
@@ -106,7 +107,7 @@ const CartPage: React.FC<CartPageProps> = ({ cart }) => {
         return;
       }
 
-      await fetch(`http://localhost:3333/cart/addCart/${userId}`, {
+      await fetch(`https://ask-commerce-api.onrender.com/cart/addCart/${userId}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
