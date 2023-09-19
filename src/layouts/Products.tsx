@@ -1,7 +1,6 @@
 import React, { useContext} from "react";
 import useSWR from "swr";
 import Link from "next/link";
-//import Cookies from "js-cookie";
 import { ProductContext } from "@/contexts/ProductContext";
 
 interface Products {
@@ -17,80 +16,18 @@ interface Products {
   };
 }
 
-// const categoryToImages: Record<string, string[]> = {
-//   Eletronics: ['Eletronics.jpg', "Eletronics2.jpg", "Eletronics3.jpg", "Eletronics4.jpg", "Eletronics5.jpg"],
-//   Books: ['Book.jpg', 'Book2.jpg', 'Book3.jpg', 'Book4.jpg', 'Book5.jpg'],
-//   Clothing: ['Clothing.jpg', 'Clothing2.jpg', 'Clothing3.jpg', 'Clothing4.jpg', 'Clothing5.jpg'],
-//   Other: ['Others.jpg', 'Others2.jpg', 'Others3.jpg', 'Others4.jpg', 'Others5.jpg'],
-// };
-
-// export const getRandomImage = (category: string) => {
-//   if (typeof window === "undefined") {
-//     // Execution on the server (server-side rendering), do nothing
-//     return "";
-//   }
-
-//   const usedImagesJSON = localStorage.getItem(`used_images_${category}`);
-//   let usedImages = [];
-
-//   if (usedImagesJSON) {
-//     try {
-//       usedImages = JSON.parse(usedImagesJSON);
-//     } catch (error) {
-//       console.error("Error parsing usedImages JSON:", error);
-//     }
-//   }
-
-//   const availableImages = categoryToImages[category] || [];
-
-//   if (availableImages.length === 0) {
-//     // usar a imagem default se não houver imagens disponíveis para aquela categoria
-//     return "default.jpg";
-//   }
-
-//   if (usedImages.length >= availableImages.length) {
-//     // Todas as imagens da categoria foram utilizadas, reset à lista
-//     usedImages = [];
-//   }
-
-//   // filtrar as imagens que ainda não foram usadas
-//   const unusedImages = availableImages.filter((image) => !usedImages.includes(image));
-
-//   if (unusedImages.length === 0) {
-//     // todas as imagens da categoria foram usadas, usar a default
-//     return "default.jpg";
-//   }
-
-//   // Choose a randomly unused image
-//   const randomIndex = Math.floor(Math.random() * unusedImages.length);
-//   const randomImage = unusedImages[randomIndex];
-
-//   // push imagem usada para array de imagens usadas
-//   usedImages.push(randomImage);
-
-//   // armazenar as imagens usadas no local storage
-//   localStorage.setItem(`used_images_${category}`, JSON.stringify(usedImages));
-
-//   return randomImage;
-// };
-
 const getAllProducts = (url: string) =>
   fetch(url).then((res) => res.json());
 
 const Products: React.FC = () => {
   const { data, error, isLoading } = useSWR(
-    //"https://fakestoreapi.com/products",
     "http://localhost:3333/products",
     getAllProducts
   );
 
-  //console.log("Received data:", data);
-
   const { productData } = useContext(ProductContext);
 
   const filteredProducts = productData.length === 0 ? data : productData;
-
-  //console.log("Filtered products:", filteredProducts);
 
   if (error) {
     return <p>Error</p>;
@@ -119,7 +56,6 @@ const Products: React.FC = () => {
 
             <img
               className="object-cover w-full h-48 mt-2"
-              //src={`/images/${getRandomImage(product.category)}`}
               src={product.image}
               alt={product.title}
             />
